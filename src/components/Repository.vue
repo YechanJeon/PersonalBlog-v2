@@ -1,49 +1,60 @@
 <template>
-  <div class = 'repository'>
-      <div class = 'titleWrap'>
-          <span @click = "$router.push(`/post/${url}`)"><!--@click="$router.push(`/post/${post.key}`)"-->
-              {{title}}
-          </span>
-      </div>
-      <div class = 'repo-contents'>
-          {{description}}
-      </div>
-        
-      <div class = 'repo-tags' v-if = "tags.length > 0">
-          <div class = 'tag' v-for = 'tag in tags' :key = 'tag' @click="() => tagSelect(tag)">{{tag}}</div>
-      </div>
-      <div class = 'repo-info'>
-          <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div> -->
-          <!-- <span @click="$router.push(`/project/${post.package.key}`)">{{post.package.name}}</span> -->
-            <div>
-              <!-- {{`${post.date.split('-')[0]}년 ${post.date.split('-')[1]}월 ${post.date.split('-')[2].substring(0,2)}일`}} -->
+    <div class="repository-wrap">
+        <div class = 'repository'>
+            <div class = 'titleWrap'>
+                <span @click = "$router.push(`/post/${url}`)"><!--@click="$router.push(`/post/${post.key}`)"-->
+                    {{info.title}}
+                </span>
             </div>
-      </div>
-  </div>
+            <div class = 'repo-contents'>
+                {{info.short_description}}
+            </div>
+            
+            <div class = 'repo-tags' v-if = "info.tags">
+                <div class = 'tag' v-for = 'tag in info.tags' :key = 'tag' @click="() => tagSelect(tag)">{{tag}}</div>
+            </div>
+            <div class = 'repo-info'>
+                <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div> -->
+                <span @click="$router.push(`/project/${info.series.url_slug}`)" v-if="info.series" style ="margin-right : 16px">{{info.series.name}}</span>
+                <div>
+                    {{ info.released_at }}
+                </div>
+            </div>
+            <!-- {{ info }} -->
+        </div>
+        <div class = "repository-heart">
+            <div></div>
+            Stars
+        </div>
+    </div>
 </template>
 
 <script>
+import axios from "axios"
+import {mapState} from "vuex"
 export default {
+    
+    computed : {
+        ...mapState(["host" , "user"])
+    },
+    data() {
+        return{
+            info : {}
+        }
+    },
     props : {
-        tags : {
-            type : Array
-        },
-        title : {
-            type : String
-        },
-        description : {
-            type : String
-        },
         url : {
             type : String
         }
     },
     methods : {
         tagSelect(tag){
-
         this.$router.push({path : "/Repositories" , query : {tag : tag}})
+        },
     },
-    }
+    async mounted() {
+        this.info = (await axios.get(`${this.host}post/simple/${this.user.velog}/${this.url}`)).data.data.post
+    },
 }
 </script>
 
@@ -52,7 +63,6 @@ export default {
         width: 100%;
 
         padding: 24px 0 24px 0;
-        border-bottom: 1px solid #D0D7DE
     }
     .titleWrap{
         margin-bottom: 4px;
@@ -109,5 +119,25 @@ export default {
         text-decoration-line:underline;
         text-underline-position: under;
         cursor: pointer;
+    }
+    .repository-heart{
+        /* width: 30px; */
+        display: flex;
+        height: 28px;
+        font-size: 12px;
+        background-color: green;
+        align-items: center;
+        padding: 3px 12px;
+    }
+    .repository-heart>div:nth-child(1){
+        width: 16px;
+        height: 16px;
+        background-color: #0969DA;
+        margin-right: 8px;
+    }
+    .repository-wrap{
+        border-bottom: 1px solid #D0D7DE;
+        display: flex;
+        align-items: center;
     }
 </style>

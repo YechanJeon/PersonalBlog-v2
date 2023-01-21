@@ -12,9 +12,6 @@
     <Repository 
     v-for = "post in posts"  
     :key = "post.id" 
-    :title = "post.title" 
-    :description = "post.short_description" 
-    :tags = "post.tags"
     :url = "post.url_slug"
     />
   </div>

@@ -129,8 +129,11 @@ actions : {
   },
   async getPost({state,commit},url){
     console.log(url)
-    commit("GET_POST" , (await axios.get(`${state.host}post/${state.user.velog}/${url}`)).data)
+    commit("GET_POST" , (await axios.get(`${state.host}post/detail/${state.user.velog}/${url}`)).data)
   },
+  // async getProject({state , commit} , url){
+
+  // }
 },
 getters : {
   postSearch : state => state.postSearch,
