@@ -1,9 +1,8 @@
 <template><div>
 
-      <ProjectSearch/>
-      <!-- {{projectSearch}} -->
+      <!-- <ProjectSearch/> -->
   <div id = 'projects' v-if = 'projectSearch === ""'>
-      <Project v-for = 'project in projects' :key = "project.key" :project = 'project'></Project>
+      <Project v-for = 'project in projects' :key = "project.key" :name = 'project.name'></Project>
   </div>
   <div id = 'projects' v-else>
       <Project v-for = 'project in searchedProjects' :key = "project.key" :project = 'project'></Project>
@@ -14,7 +13,7 @@
 
 <script>
 import Project from '../components/Project'
-import ProjectSearch from '../components/ProjectSearch.vue'
+// import ProjectSearch from '../components/ProjectSearch.vue'
 import {mapActions,  mapState , mapGetters} from 'vuex'
 export default {
   data(){
@@ -30,16 +29,14 @@ export default {
     document.title = 'Projects'
   },
   computed:{
-    ...mapState({
-      projects : state => state.uploadStore.projects
-    }),
+    ...mapState(["projects"]),
     ...mapGetters([
       'projectSearch'
     ])
   },
   components:{
     Project,
-    ProjectSearch,
+    // ProjectSearch,
   },
   watch : {
     projectSearch(){

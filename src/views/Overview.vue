@@ -7,10 +7,12 @@
         <Pinned/>
         <Pinned/>
         <Pinned/> -->
+        <!-- {{ pinnedPosts }} -->
         <Pinned 
         v-for = "post in pinnedPosts" 
-        :key = 'post.key'
-        :post = 'post'
+        :key = 'post.id'
+        :title = 'post.title'
+        :description = "post.short_description"
         ></Pinned>
         <!-- <div v-for="post in pinnedPostsa" :key = "post.key">{{post}}</div> -->
     </div> 
@@ -36,9 +38,9 @@ export default {
          document.title = 'YechanJeon - Blog'
     },
     computed : {
-        ...mapState({
-            pinnedPosts : state => state.overviewActions.pinnedPosts
-        })
+        ...mapState([
+            "pinnedPosts",
+        ])
        
     },
 }

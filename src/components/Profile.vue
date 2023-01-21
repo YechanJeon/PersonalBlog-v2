@@ -2,34 +2,40 @@
     <div id = "profile">
         <div>
             <div id = "profileImg">
-                <img :src="profileImage" alt="">
+                <img :src="userProfile.image" alt="">
             </div>
             <div id = 'names'>
-                <div id = 'profile-name'>전예찬</div>
-                <div id = 'profile-id'>YechanJeon</div>   
+                <div id = 'profile-name'>{{ userProfile.name }}</div>
+                <div id = 'profile-id'>{{userProfile.id}}</div>   
             </div>
             
         </div>
         
 
         
-        <div id = 'profile-devide'></div>
-        <div id = 'profile-bio'>프론트엔드 비중이 높은 풀스택 개발자</div>
-        <div id = 'profile-devide'></div>
-        <!-- <div id = 'profile-company'><font-awesome-icon icon = "building"/>  회사 </div> -->
-        <div id = 'profile-location'><font-awesome-icon icon="map-marker-alt"/> Sokcho, Korea</div>
-        <!-- <div id = 'profile-website'><font-awesome-icon icon="link"/> websites</div> -->
-        <!-- 깃헙 인스타 벨로그 메일컨택-->
+        <div id = 'profile-bio'>{{ userProfile.bio }}</div>
+        <div>
+            <div class = 'profile-details' v-if = "userProfile.worksFor"><span></span><span>{{userProfile.worksFor}}</span></div>
+            <div class = 'profile-details' v-if  = "userProfile.homeLocation"><span></span><span>{{userProfile.homeLocation}}</span></div>
+            <div class = 'profile-details' v-if = "userProfile.url"><span></span><span>{{userProfile.url}}</span></div>
+            <div class = 'profile-details' v-if = "userProfile.twitter"><span></span><span>{{userProfile.twitter}}</span></div>
+        </div>
     </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapActions, mapState ,  } from 'vuex';
 export default {
     computed : {
-        ...mapState([
-            'profileImage'
+        ...mapState(["userProfile"])
+    },
+    methods : {
+        ...mapActions([
+            "getProfile"
         ])
+    },
+    mounted(){ 
+        this.getProfile()
     }
 }
 </script>
@@ -50,6 +56,24 @@ export default {
         position: relative;
         z-index: 1;
     }
+    #profile-bio{
+        margin-top: 16px;
+        margin-bottom: 16px;
+        color: #24292F;
+    }
+    .profile-details{
+        font-size: 14px;
+        color: #24292F;
+        display: flex;
+        align-items: baseline;
+    }
+    .profile-details>:nth-child(1){
+        background-color: green;
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        margin-top: 4px;
+    }
     #profileImg>img{
         /* width: 296px; 주석처리해야됨 */
         /* height: 296px; */
@@ -63,11 +87,12 @@ export default {
         margin: 20px 0 20px 0;
     }
     #profile-name{
-        font-size: 26px;
-        font-weight: 600;
+        font-size: 24px;
+        font-weight: 500;
     }
     #profile-id{
         font-size: 20px;
+        font-weight: 300;
         color: #57606a;
     }
     @media(max-width: 767px){

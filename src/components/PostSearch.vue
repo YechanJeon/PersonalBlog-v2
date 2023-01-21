@@ -2,58 +2,29 @@
   <div id = 'repositories'>
     
     <div id = 'postSearchInputs'>
-      <div id = 'mobile-newPostToggle' v-if = '$cookies.get("admin")'>
-
-      </div>
-      <input type="text" id = 'searchInput' placeholder="Find a repository.." autocomplete="off" @input = 'e => POST_SEARCH(e.target.value)'>
-
+      <input type="text" id = 'searchInput' :value = "searchKeyword" placeholder="Find a repository.." autocomplete="off" @input = '(e) => postSearch(e.target.value)'>
+      
       <div id = 'selects'>
           <!-- {{selectFocus}} -->
         <div ref = 'seletTagToggle'>
           <div class = 'selectInput' @mousedown = 'tagToggleActive'>
             Tag<span style = 'margin-left : 4px;'><font-awesome-icon icon="caret-down" class ='fas'/></span>
           </div>
-          
           <div id = 'tagDetail' v-if = 'selectFocus === "tagSelect"' tabindex="0" @blur = 'selectRemove'>
             <div class =  'detailSelct'>
               <div>
                 Select tag
                 <span @click = 'selectRemove'>
                   <font-awesome-icon icon="times" class ='fas' />
-                  <!-- :style = "tagSelected.find(e => e === tag.tag) ? " -->
+                  <!-- :style = "selectedTag.find(e => e === tag.tag) ? " -->
                 </span>
               </div>
-
-              <div v-for="tag in tags" :key = tag @click = 'tagSelectActive(tag)'>
+            
+              <div class = "tagSelectElement" v-for="tag in tags" :key = tag.id @click = "() => tagSelect(tag.name)" ><!--@click = 'tagSelectActive(tag)'-->
                 <span class = 'selectCheck'>
-                  <font-awesome-icon icon="check" class ='fas' :style ="tagSelected === tag ? {visibility : 'visible'} : {visibility : 'hidden'}"/>
+                  <font-awesome-icon icon="check" class ='fas' :style ="selectedTag === tag.name ? {visibility : 'visible'} : {visibility : 'hidden'}"/>
                 </span>
-                {{tag}}
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div>
-          <div class = 'selectInput' @mousedown="sortToggleActive">
-            Sorts<span style = 'margin-left : 4px;'><font-awesome-icon icon="caret-down" class ='fas'/></span>
-          </div>
-
-          <div id = 'sortDetail' v-if = 'selectFocus === "sortSelect"' @blur = 'selectRemove' tabindex="0">
-            <div class =  'detailSelct' ref = 'sortSelectDetail'>
-              <div>
-                Select order
-                <span @click = 'selectRemove'>
-                  <font-awesome-icon icon="times" class ='fas'/>
-                </span>
-              </div>
-              
-              <div v-for="sort in sorts" :key="sort.id" @click = 'sortSelectActive(sort.sort)'>
-                <span class = 'selectCheck' >
-                  <font-awesome-icon icon="check" class ='fas' :ref = 'sort.sort' :style ="sortSelected === sort.sort ? {visibility : 'visible'} : {visibility : 'hidden'}" />
-                </span>
-                {{sort.sort}}
+                {{tag.name}}
               </div>
 
             </div>
@@ -63,51 +34,67 @@
       
       </div>
     </div>
+    <div id = "postFilter" v-if = "searchKeyword || selectedTag" @click = "() => searchReset()">
+      <div v-if = "searchKeyword !== ''" >
+        <span class="bold">{{ searchKeyword }}</span>의 검색결과 <span class="bold">{{postsCount}}</span>개가 있습니다.
+      </div>
+      <div v-else-if = "selectedTag">
+        <span class="bold">{{ selectedTag }}</span> 태그를 포함한 게시물 <span class="bold">{{ postsCount }}</span>개가 있습니다.
+      </div>
+      <div id = "postFilterBtn">
+        <div></div>
+        clear filter
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import store from '../store/index'
-import {mapActions , mapMutations} from 'vuex'
+import {mapActions , mapState} from 'vuex'
 export default {
+  computed : {
+    ...mapState(["tags" , "postsCount"])
+  },
   data(){
     return {
       selectFocus : '',
-      tagSelected : '',
-      sortSelected : 'Last Update',
-      tags : [],
-      sorts : [
-          {sort : 'Last Update' , id : 1},
-          {sort : 'Popular' , id : 2}
-      ]
+      selectedTag : '',
+      searchKeyword : "",
+      timer : '',
     }
   },
   methods : {
     ...mapActions([
-      'getTagPosts',
-      'getPosts'
+      "getTags",
+      "getSearchedPosts",
+      "getPosts"
     ]),
-    ...mapMutations([
-      'POST_SEARCH'
-    ]),
-    selectRemove(){this.selectFocus = ''},
-    sortSelectActive(value){
-        if(this.sortSelected !== value){
-            this.sortSelected = value
+    postSearch(value){
+      this.searchKeyword = value
+      this.selectedTag = ""
+      clearTimeout(this.timer) 
+      this.timer = setTimeout(() => {
+        if(this.searchKeyword !== ""){
+          this.$router.push({path : "/Repositories" , query : {keyword : this.searchKeyword}})
+          this.getSearchedPosts(this.searchKeyword)
+        }else{
+          this.$router.push({path: "/Repositories"})
+          this.getPosts()
         }
-        console.log(this.sortSelected)
-        // this.$refs[this.sortSelected].style.visibility = 'visible'
-        // document.getElementById(this.sortSelected).style.visibility = 'visible'
+      } , 500)
+      
     },
-    tagSelectActive(tag){
-      if(this.tagSelected !== tag){
-        this.getTagPosts(tag)
-        this.tagSelected = tag
-      }else{
-        this.tagSelected = ''
-        this.getPosts()
-      }
+  
+    selectRemove(){
+      setTimeout(() => this.selectFocus = '',50)
+    },
+
+    tagSelect(tag){
+        this.selectedTag = tag
+        this.searchKeyword = ""
+        this.$router.push({path : "/Repositories" , query : {tag : tag}})
+        this.getPosts(tag)
+        this.selectRemove()
     },
     tagToggleActive(){
       this.selectFocus = 'tagSelect'
@@ -117,13 +104,9 @@ export default {
         }
       } , 5)
     },
-    sortToggleActive(){
-      this.selectFocus = 'sortSelect'
-      setTimeout(() => {
-        if(document.getElementById('sortDetail')){
-          document.getElementById('sortDetail').focus()
-        }
-      } , 5)
+    searchReset() {
+      this.selectedTag = ""
+      this.searchKeyword = ""
     }
   },  
   watch : {
@@ -138,8 +121,10 @@ export default {
     }
   },
   async mounted(){
-    this.POST_SEARCH('')
-    this.tags = (await axios.get(`${store.state.host}tags`)).data
+    this.getTags()
+    if(this.$route.query){
+      this.$router.push({path: "/Repositories"})
+    }
     window.addEventListener('resize' ,() => {
       if(window.innerWidth < 544){
         if(this.selectFocus !== ''){
@@ -149,6 +134,9 @@ export default {
         document.getElementById('profileImg').classList.remove('profileImageMobile')
       }
     })
+  },
+  unmounted(){
+
   }
 } 
 </script>
@@ -276,6 +264,9 @@ export default {
     width: 20px;
     height: 20px;
   }
+  #searchInput:focus{
+    outline: none;
+  }
   .selectInput{
     font-size: 14px;
     font-weight: 500;
@@ -334,6 +325,38 @@ export default {
   }
   .selectCheck{
     margin-right: 8px;
-
+  }
+  .tagSelectElement{
+    cursor: pointer;
+  }
+  .tagSelectElement:hover{
+    background-color: #F6F8FA;
+  }
+  #postFilter{
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #D0D7DE  ;
+    display: flex;
+    align-items: center;
+    justify-content: space-between  ;
+    font-size: 14px;
+  }
+  #postFilterBtn{
+    height: 24px;
+    display: flex;
+    align-items: baseline;
+    font-size: 15px;
+    color: #57606A;
+    cursor: pointer;
+  }
+  #postFilterBtn>div{
+    width: 18px;
+    height: 18px;
+    background-color: #2da44e;
+    margin-top: 6px;
+    margin-right: 6px;
+  }
+  .bold{
+    font-weight: 500;
   }
 </style>

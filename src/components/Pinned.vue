@@ -1,27 +1,29 @@
 <template>
   <div id = 'pinned'>
       <!-- {{post}} -->
-      <span id = 'pinnedTitle' @click = '$router.push(`/post/${post.key}`)'>
-          {{post.title}}
+      <span id = 'pinnedTitle'> <!--@click = '$router.push(`/post/${post.key}`)'-->
+          {{title}}
       </span>
       <div id = 'pinnedContents'>
-          {{post.description}}
+          {{description}}
       </div>
-      <div id = 'pinnedInfo' @click = '$router.push(`/project/${post.package.key}`)'>
-          <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}"></div>
-          {{post.package.name}}
+      <div id = 'pinnedInfo' ><!--@click = '$router.push(`/project/${post.package.key}`)'-->
+          <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}"></div> -->
+          <!-- {{post.package.name}} -->
       </div>
     </div>
 </template>
 
 <script>
-// import {mapActions} from 'vuex'
-
 export default {
     props : {
-        post : {
-            type : Object
+        title : {
+            type : String
+        },
+        description : {
+            type : String
         }
+
     },
 }
 </script>

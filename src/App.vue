@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
   blockquote{
     margin: 0;
     border-left: 5px solid black;
@@ -37,7 +37,7 @@ export default {
     padding: 10px;
   }
   *{
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     box-sizing: border-box;
   }
   body{

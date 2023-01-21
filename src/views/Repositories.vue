@@ -1,14 +1,20 @@
 <template>
   <div>
     <PostSearch/>
-      <!-- {{postSearch}} -->
-    <div v-if = 'postSearch === ""'>
+      
+    <!-- <div v-if = 'postSearch === ""'>
     <Repository v-for = 'post in posts' :key = 'post.key' :post="post"/>
     
     </div>
     <div v-else>
       <Repository v-for = 'post in searchedPost' :key = 'post.key' :post="post"/>
-    </div>
+    </div> -->
+    <Repository 
+    v-for = "post in posts"  
+    :key = "post.id" 
+    :title = "post.title" 
+    :description = "post.short_description" 
+    :tags = "post.tags" />
   </div>
 </template>
 
@@ -32,9 +38,9 @@ export default {
     document.title = 'Repositories'
   },
   computed : {
-    ...mapState({
-      posts : state => state.overviewActions.posts
-    }),
+    ...mapState([
+      "posts"
+    ]),
     ...mapGetters([
       'postSearch'
     ])

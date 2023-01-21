@@ -1,23 +1,22 @@
 <template>
   <div class = 'repository'>
       <div class = 'titleWrap'>
-          <span @click="$router.push(`/post/${post.key}`)">
-              {{post.title}}
+          <span ><!--@click="$router.push(`/post/${post.key}`)"-->
+              {{title}}
           </span>
       </div>
       <div class = 'repo-contents'>
-          {{post.description}}
+          {{description}}
       </div>
         
-      <div class = 'repo-tags' v-if = "post.tags.length > 0">
-          <div class = 'tag' v-for = 'tag in post.tags' :key = 'tag'>{{tag.name}}</div>
+      <div class = 'repo-tags' v-if = "tags.length > 0">
+          <div class = 'tag' v-for = 'tag in tags' :key = 'tag'>{{tag}}</div>
       </div>
       <div class = 'repo-info'>
-          <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div>
-          <span @click="$router.push(`/project/${post.package.key}`)">{{post.package.name}}</span>
-          <!-- <div>{{post.date}}</div> -->
+          <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div> -->
+          <!-- <span @click="$router.push(`/project/${post.package.key}`)">{{post.package.name}}</span> -->
             <div>
-              {{`${post.date.split('-')[0]}년 ${post.date.split('-')[1]}월 ${post.date.split('-')[2].substring(0,2)}일`}}
+              <!-- {{`${post.date.split('-')[0]}년 ${post.date.split('-')[1]}월 ${post.date.split('-')[2].substring(0,2)}일`}} -->
             </div>
       </div>
   </div>
@@ -26,8 +25,14 @@
 <script>
 export default {
     props : {
-        post : {
-            type : Object
+        tags : {
+            type : Array
+        },
+        title : {
+            type : String
+        },
+        description : {
+            type : String
         }
     }
 }

@@ -6,19 +6,7 @@
         <router-link to="/"> <div id = 'header-madinPage'></div></router-link>
         <input type="text" placeholder="Search or jump to.." autocomplete='off'>
       </div>
-      <div id = 'header-right' v-if = '$cookies.get("admin")'>
-        <div>
-          <div></div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" @mouseover="headerRightHover('in')" @mouseout="headerRightHover('out')" @mousedown = "uploadToggleActive">
-            <path d="M4 12H20M12 20V4" stroke="white" stroke-width="2" ref = 'add'/>
-          </svg>
-          <span style = 'font-size : 11px' @mouseover="headerRightHover('in')" @mouseout="headerRightHover('out')" @mousedown = "uploadToggleActive"><font-awesome-icon icon="caret-down" class ='fas' color = 'white' id="down"/></span>
-          <div id = 'header-uploadToggle' v-if="uploadToggle" tabindex="0" @blur = 'uploadToggle = false'>
-            <div class = 'uploadToggleItems' @click = 'clickNewPostToggle'>New Post</div>
-            <div class = 'uploadToggleItems' @click = 'clickimportPostToggle'>Import Post</div>
-          </div>
-          
-        </div>
+      <div id = 'header-right'>
        
         <div style = 'display : flex; align-items : center;' @mousedown = 'profileToggleActive'>
           <div id ='header-profile' @mouseover = 'profileover' @mouseout="profileout"></div>
@@ -43,58 +31,23 @@
 
       <!-- router-link $router.push 로 교체 -->
       </div>
-      <div id = 'mobile-logo' @click = '$router.push("/")'>
-
-      </div>
+      <div id = 'mobile-logo' @click = '$router.push("/")'/>
     </div>
 </template>
 
 <script>
-import {mapActions, mapMutations , } from 'vuex'//mapState
 export default {
   data(){
     return {
-      uploadToggle : false,
       profileToggle : false,
     }
   },
-  // computed : {
-  //   ...mapState({
-  //     uploadPageAccess : state => state.uploadStore.uploadPageAccess
-  //   })
-  // },
   methods:{
-    ...mapActions([
-      'getProjects',
-    ]),
-    ...mapMutations([
-      'PROJECTS',
-      'UPLOADPAGEACCESS_TRUE',
-      'EDITMODE_RESET',
-      'RESET_POSTINFO'
-    ]),
     profileover(){
       document.getElementsByClassName('profileAdd')[0].style.color = '#B6B7B9'
     },
     profileout(){
       document.getElementsByClassName('profileAdd')[0].style.color = 'white'
-    },
-    headerRightHover(stat){
-      if(stat === 'in'){
-      this.$refs.add.style.stroke = '#B6B7B9'
-      document.getElementById('down').style.color = '#B6B7B9'
-     }else if(stat === 'out'){
-       this.$refs.add.style.stroke = 'white'
-       document.getElementById('down').style.color = 'white'
-     }
-    },
-    uploadToggleActive(){
-        this.uploadToggle = true
-        setTimeout(() => {
-        if(document.getElementById('header-uploadToggle')){
-          document.getElementById('header-uploadToggle').focus()
-        }
-      } , 5)
     },
     profileToggleActive(){
       this.profileToggle = true
@@ -107,24 +60,10 @@ export default {
     profileToggleDisable(){
       setTimeout(()=> this.profileToggle = false , 5 )
     },
-    clickNewPostToggle(){
-      this.uploadToggle = false
-      // this.getProjects()
-      this.PROJECTS()
-      this.UPLOADPAGEACCESS_TRUE()
-      this.RESET_POSTINFO()
-      this.EDITMODE_RESET()
-      this.$router.push('/NewPost')
-    },
     profileTogglePush(locate){
       this.$router.push(locate)
       this.profileToggle = false
     },
-    clickimportPostToggle(){
-      this.$router.push('/ImportPost')
-      this.uploadToggle = false
-    }
-
   }
 }
 </script>
@@ -154,17 +93,17 @@ export default {
   }
   #header{
     width: 100vw;
-    height: 62px;
+    height: 60px;
     background-color: #24292E;
     display: flex;
     align-items: center;
-    padding: 0 34px 0 34px;
+    padding: 0 32px 0 32px;
     justify-content: space-between;
   }
   #header-left, #header-right{
     display: flex;
     align-items: center;
-    height: 62px;
+    height: 60px;
   }
   #header-madinPage{
     width: 32px;
@@ -179,11 +118,15 @@ export default {
     background: #24292E;
     border: 1px solid #57606a;;
     width: 272px;
-    height: 30px;
+    height: 28px;
     border-radius: 6px;
     padding-left: 12px;
     padding-right: 12px;
-    color: #D0D7DE;
+    color: white;
+  }
+  #header-left>input::placeholder{
+    color: #C7C8C9;
+    letter-spacing: 0.13px;
   }
   #header-left>input:focus{
     outline: none;

@@ -1,11 +1,13 @@
 <template>
     <div >
         <div class = 'project'>
-            <div class ='project-title' ><div :style = "{background : project.color}"></div>{{project.name}}</div>
-            <div class = 'project-contents'> {{project.description}}</div>
+            <div class ='project-title' >{{name}}</div> <!--<div :style = "{background : project.color}" />-->
+            <div class = 'project-contents'> {{description}}</div>
             <div class = 'project-Toggles'>
-                <div class = 'project-button' @click = 'projectDetailPage'>프로젝트 살펴보기</div>
-                <div id = 'project-controlTogle' @mousedown="PROJECTTOGGLE_ACTIVE(project.key)" v-if = '$cookies.get("admin")'>
+                <div class = 'project-button' >프로젝트 살펴보기</div><!--@click = 'projectDetailPage'-->
+
+
+                <!-- <div id = 'project-controlTogle' @mousedown="PROJECTTOGGLE_ACTIVE(project.key)" v-if = '$cookies.get("admin")'>
                     <span>
                         <font-awesome-icon icon = 'ellipsis-v' class = 'fas'/>
                     </span>
@@ -13,38 +15,24 @@
                         <div @click = 'projectEdit'><div><font-awesome-icon icon = 'edit' class = 'fas'/></div> Edit Project</div>
                         <div @click = 'projectDelete(project.key)'> <div><font-awesome-icon icon = 'trash' class = 'fas'/></div> Delete Project</div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import {mapMutations , mapGetters , mapActions} from 'vuex'
 export default {
     computed : {
-        ...mapGetters(['toggleActivedProject',
-        ])
     },
     methods : {
-        projectDetailPage(){
-            this.$router.push(`/project/${this.project.key}`)
-        },
-        ...mapMutations([
-            'PROJECTTOGGLE_ACTIVE'
-        ]),
-        ...mapActions([
-            'editProject',
-            'projectDelete'
-        ]),
-        projectEdit(){
-            // console.log(this.project.key)
-            this.editProject(this.project.key)
-        },
     },
     props : {
-        project : {
-            type : Object
+        name : {
+            type : String
+        },
+        description : {
+            type : String
         }
     }
 }
