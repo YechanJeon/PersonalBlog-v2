@@ -15,7 +15,10 @@
             </div>
             <div class = 'repo-info'>
                 <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div> -->
-                <span @click="$router.push(`/project/${info.series.url_slug}`)" v-if="info.series" style ="margin-right : 16px">{{info.series.name}}</span>
+                <div class = 'pinnedPostPackageCircle' :style = "{ backgroundColor : projectColor}"></div>
+                <span @click="$router.push(`/project/${info.series.url_slug}`)" v-if="info.series" style ="margin-right : 16px">
+                    {{info.series.name}}
+                </span>
                 <div>
                     {{ info.released_at }}
                 </div>
@@ -39,7 +42,8 @@ export default {
     },
     data() {
         return{
-            info : {}
+            info : {},
+            projectColor : "",
         }
     },
     props : {
@@ -53,7 +57,10 @@ export default {
         },
     },
     async mounted() {
+        console.log(this.url)
         this.info = (await axios.get(`${this.host}post/simple/${this.user.velog}/${this.url}`)).data.data.post
+    
+        this.projectColor = (await axios.get(`${this.host}series/${this.user.velog}/${this.info.series.url_slug}`)).data.data.series.color
     },
 }
 </script>

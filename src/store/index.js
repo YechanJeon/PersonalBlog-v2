@@ -1,11 +1,11 @@
 import { createStore } from 'vuex'
 
 // import markdownEditStore from './modules/markdownEditStore'
-import uploadStore from './modules/uploadStore'
-import overviewActions from './modules/overviewActions'
-import getDetails from './modules/getDetails'
-import updates from './modules/updates'
-import editProject from './modules/editProject'
+// import uploadStore from './modules/uploadStore'
+// import overviewActions from './modules/overviewActions'
+// import getDetails from './modules/getDetails'
+// import updates from './modules/updates'
+// import editProject from './modules/editProject'
 
 import axios from 'axios'
 
@@ -25,7 +25,7 @@ export default createStore({
 
     user : {
       github : "YechanJeon",
-      velog : "bepyan",
+      velog : "yechann_",
     },
     host : "http://localhost:3000/",
     userProfile : {
@@ -141,10 +141,10 @@ getters : {
 },
   modules: {
     // markdownEditStore,
-    uploadStore,
-    overviewActions,
-    getDetails,
-    updates,
-    editProject
+    // uploadStore,
+    // overviewActions,
+    // getDetails,
+    // updates,
+    // editProject
   }
 })

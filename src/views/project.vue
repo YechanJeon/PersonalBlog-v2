@@ -9,47 +9,39 @@
                     padding-bottom: 20px'>
             <div id="project-infosWrap">
                 <div id = 'project-infos'>
-                    <div :style = '{backgroundColor : project.color}'></div>
-                    <div>{{project.name}}</div>
+                    <div :style = '{backgroundColor : info.color}'></div>
+                    <div>{{info.name}}</div>
                 </div>
                 <div id = 'project-describe'>
-                    {{project.description}}
+                    {{info.description}}
                 </div>
             </div>
         </div>
-      <Repository v-for = 'post in posts' :key = 'post.key' :post="post"/>
+        <div  v-if = "info.series_posts">
+            <Repository v-for = 'post in info.series_posts' :key = "post.post.url" :url = "post.post.url_slug"></Repository>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
 import Repository from '../components/Repository.vue'
-import {mapActions , mapMutations, mapState} from 'vuex'
+import {mapState} from 'vuex'
+import axios from "axios"
 export default {
-  components: { Repository },
-  computed : {
-      ...mapState({
-          project : state => state.getDetails.project,
-          posts : state => state.getDetails.projectPosts
-      })
-  },
-  methods : {
-      ...mapActions([
-          'getProject',
-          'getProjectPosts'
-      ]),
-      ...mapMutations([
-          'RESET_PROJECT'
-      ])
-  },
-  mounted() {
-      this.getProject(this.$route.params.project)
-      this.getProjectPosts(this.$route.params.project)
-      document.title = 'Project'
-  },
-  beforeUnmount() {
-      this.RESET_PROJECT()
-  },
+    computed : {
+        ...mapState(["host" , "user"])
+    },
+    data(){
+        return{
+            info : {}
+        }
+    },
+    components: { Repository },
+    async mounted() {
+        this.info = (await axios.get(`${this.host}series/${this.user.velog}/${this.$route.params.project}`)).data.data.series
+        console.log(this.info)
+    },
 
 }
 </script>

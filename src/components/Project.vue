@@ -1,42 +1,37 @@
 <template>
     <div >
         <div class = 'project'>
-            <div class ='project-title' >{{name}}</div> <!--<div :style = "{background : project.color}" />-->
-            <div class = 'project-contents'> {{description}}</div>
+            <div class ='project-title' ><div :style = "{background : info.color}"></div>{{info.name}}</div> <!--<div :style = "{background : project.color}" />-->
+            <div class = 'project-contents'> {{info.description}}</div>
             <div class = 'project-Toggles'>
                 <div class = 'project-button' @click = "$router.push(`/project/${url}`)">프로젝트 살펴보기</div><!--@click = 'projectDetailPage'-->
 
-
-                <!-- <div id = 'project-controlTogle' @mousedown="PROJECTTOGGLE_ACTIVE(project.key)" v-if = '$cookies.get("admin")'>
-                    <span>
-                        <font-awesome-icon icon = 'ellipsis-v' class = 'fas'/>
-                    </span>
-                    <div id = 'project-control' v-if = 'toggleActivedProject === project.key' tabindex="0" @blur = "PROJECTTOGGLE_ACTIVE(0)">
-                        <div @click = 'projectEdit'><div><font-awesome-icon icon = 'edit' class = 'fas'/></div> Edit Project</div>
-                        <div @click = 'projectDelete(project.key)'> <div><font-awesome-icon icon = 'trash' class = 'fas'/></div> Delete Project</div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from "axios"
+import { mapState } from "vuex";
 export default {
     computed : {
+        ...mapState(["host" , "user"])
+    },
+    data(){
+        return{
+            info : {}
+        }
     },
     methods : {
     },
     props : {
-        name : {
-            type : String
-        },
-        description : {
-            type : String
-        },
         url : {
             type : String
         }
+    },
+    async mounted(){
+        this.info = (await axios.get(`${this.host}series/${this.user.velog}/${this.url}`)).data.data.series
     }
 }
 </script>
