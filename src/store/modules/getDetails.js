@@ -29,13 +29,13 @@ const getDetailsStore = {
             commit('GET_PROJECTPOST' , posts)
 
         },
-        async getPost({commit} , postKey){
-            const post = (await axios.get(`${store.state.host}post/${postKey}`)).data
-            post.date = `${post.date.split('-')[0]}년 ${post.date.split('-')[1]}월 ${post.date.split('-')[2].substring(0,2)}일`
-            document.title = post.title
-            commit('GET_POST' , post)
+        // async getPost({commit} , postKey){
+        //     const post = (await axios.get(`${store.state.host}post/${postKey}`)).data
+        //     post.date = `${post.date.split('-')[0]}년 ${post.date.split('-')[1]}월 ${post.date.split('-')[2].substring(0,2)}일`
+        //     document.title = post.title
+        //     commit('GET_POST' , post)
 
-        },
+        // },
         async getPinnedCheck({commit} , postKey){
             const check = (await axios.get(`${store.state.host}pinnedCheck/${postKey}`)).data
             commit('POSTPINNED_CHECK' , check)

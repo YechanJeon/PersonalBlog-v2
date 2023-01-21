@@ -23,10 +23,10 @@ const overviewActions = {
         
     },
     actions : {
-        async getPinnedPosts({commit}){
-            const pinnedposts = await axios.get(`${store.state.host}pinnedPost`)
-            commit('PINNED_POSTS' , pinnedposts.data)
-        },
+        // async getPinnedPosts({commit}){
+        //     const pinnedposts = await axios.get(`${store.state.host}pinnedPost`)
+        //     commit('PINNED_POSTS' , pinnedposts.data)
+        // },
         // async getPosts({commit}){
         //     const posts = (await axios.get(`${store.state.host}posts`)).data
         //     commit('POSTS' , posts)

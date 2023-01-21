@@ -8,18 +8,16 @@
           <!-- {{selectFocus}} -->
         <div ref = 'seletTagToggle'>
           <div class = 'selectInput' @mousedown = 'tagToggleActive'>
-            Tag<span style = 'margin-left : 4px;'><font-awesome-icon icon="caret-down" class ='fas'/></span>
+            Tag<span style = "margin-left : 4px;"><font-awesome-icon icon="caret-down" class ='fas'/></span>
           </div>
           <div id = 'tagDetail' v-if = 'selectFocus === "tagSelect"' tabindex="0" @blur = 'selectRemove'>
             <div class =  'detailSelct'>
               <div>
-                Select tag
+                Select tag 
                 <span @click = 'selectRemove'>
                   <font-awesome-icon icon="times" class ='fas' />
-                  <!-- :style = "selectedTag.find(e => e === tag.tag) ? " -->
                 </span>
               </div>
-            
               <div class = "tagSelectElement" v-for="tag in tags" :key = tag.id @click = "() => tagSelect(tag.name)" ><!--@click = 'tagSelectActive(tag)'-->
                 <span class = 'selectCheck'>
                   <font-awesome-icon icon="check" class ='fas' :style ="selectedTag === tag.name ? {visibility : 'visible'} : {visibility : 'hidden'}"/>
@@ -35,7 +33,7 @@
       </div>
     </div>
     <div id = "postFilter" v-if = "searchKeyword || selectedTag" @click = "() => searchReset()">
-      <div v-if = "searchKeyword !== ''" >
+      <div v-if = "searchKeyword" >
         <span class="bold">{{ searchKeyword }}</span>의 검색결과 <span class="bold">{{postsCount}}</span>개가 있습니다.
       </div>
       <div v-else-if = "selectedTag">
@@ -50,15 +48,17 @@
 </template>
 
 <script>
-import {mapActions , mapState} from 'vuex'
+import {mapActions , mapState, mapMutations} from 'vuex'
 export default {
   computed : {
-    ...mapState(["tags" , "postsCount"])
+    ...mapState(["tags" , "postsCount"]),
+    selectedTag(){
+      return this.$route.query.tag
+    }
   },
   data(){
     return {
       selectFocus : '',
-      selectedTag : '',
       searchKeyword : "",
       timer : '',
     }
@@ -69,9 +69,10 @@ export default {
       "getSearchedPosts",
       "getPosts"
     ]),
+    ...mapMutations(["TAG_SELECT"]),
     postSearch(value){
       this.searchKeyword = value
-      this.selectedTag = ""
+      this.TAG_SELECT()
       clearTimeout(this.timer) 
       this.timer = setTimeout(() => {
         if(this.searchKeyword !== ""){
@@ -90,11 +91,9 @@ export default {
     },
 
     tagSelect(tag){
-        this.selectedTag = tag
         this.searchKeyword = ""
         this.$router.push({path : "/Repositories" , query : {tag : tag}})
-        this.getPosts(tag)
-        this.selectRemove()
+        this.selectRemove()//포커스 아웃시 드롭다운 제거 하는 함수
     },
     tagToggleActive(){
       this.selectFocus = 'tagSelect'
@@ -105,11 +104,14 @@ export default {
       } , 5)
     },
     searchReset() {
-      this.selectedTag = ""
       this.searchKeyword = ""
+      this.$router.push({path: "/Repositories"})
     }
   },  
   watch : {
+    selectedTag(){
+      this.getPosts(this.selectedTag)
+    },
     selectFocus(){
       if(window.innerWidth < 544){
       if(this.selectFocus !== ''){
@@ -344,7 +346,7 @@ export default {
   #postFilterBtn{
     height: 24px;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     font-size: 15px;
     color: #57606A;
     cursor: pointer;
@@ -353,7 +355,7 @@ export default {
     width: 18px;
     height: 18px;
     background-color: #2da44e;
-    margin-top: 6px;
+    /* margin-top: 6px; */
     margin-right: 6px;
   }
   .bold{

@@ -3,40 +3,30 @@
       <div>
         <div>
             <div id = 'viewPost-mainInfos'>
-                <div id = 'viewPost-packageInfos'>
+                <!-- <div id = 'viewPost-packageInfos'>
                     <div :style = "{backgroundColor : post.packageColor}"></div>
-                    <!-- <div>{{post.package}}</div>     -->
                     {{post.packageName}}
-
-                    
-            </div>
+                </div> -->
                 
-            <div id = 'viewPost-title'>{{post.title}}</div>
-        </div>
+                <div id = 'viewPost-title'>{{post.title}}</div>
+            </div>
+
+        
             <div id = 'viewPost-infos'>
+                <!-- {{ userProfile }} -->
                 <div id = 'viewPost-profile'>
                     <div id ='viewPost-profileImage'>
-                        <img :src="profileImage" alt="">
+                        <img :src="userProfile.image" alt="">
                     </div>
                     <div>
-                        <div id ='viewPost-InfoName'>전예찬</div>
-                        <div id ='viewPost-InfoDate'>{{post.date}}</div>
+                        <div id ='viewPost-InfoName'>{{userProfile.name}}</div>
+                        <!-- <div id ='viewPost-InfoDate'>{{post.date}}</div> -->
                     </div>
                 </div>
-                <div id = 'viewPost-controllTogle' v-if = '$cookies.get("admin")'>
-                    <span @mousedown = 'controllToggleActive'>
-                        <font-awesome-icon icon = 'ellipsis-v' class = 'fas'/>
-                    </span>
-                    <div id = 'viewPost-controll' v-if = 'controllToggle' tabindex="0" @blur = 'viewPostDisablecontrol'>
-                        <div v-if = 'pinnedCheck' @click = 'clickRemovePinned($route.params.post)'><div><font-awesome-icon icon = 'thumbtack' class = 'fas' /></div> Unpinned</div>
-                        <div v-else @click = 'clickAddPinned($route.params.post)'><div><font-awesome-icon icon = 'thumbtack' class = 'fas'/></div> Pinned</div>
-                        <div @click = 'editPost'><div><font-awesome-icon icon = 'edit' class = 'fas'/></div> Edit Post</div>
-                        <div @click = 'removePost($route.params.post)'> <div><font-awesome-icon icon = 'trash' class = 'fas'/></div> Delete Post</div>
-                    </div>
-                </div>
-
             </div>
-            <div id = 'viewPost-content' v-html="content">
+
+            <!-- {{ post.content }} -->
+            <div id = 'viewPost-content' v-html="post.content">
             </div>
         </div>
       </div>
@@ -44,10 +34,9 @@
 </template>
 
 <script>
-import {mapActions , mapGetters, mapMutations, mapState} from 'vuex'
+import {mapActions, mapState} from 'vuex'
 // import momnet from 'moment'
 export default {
-    title : 'this.post.title',
     data(){
         return{
             controllToggle : false,
@@ -55,70 +44,24 @@ export default {
         }
     },
     computed :{
-        ...mapState({
-            // post : state => state.getDetails.postContent,
-            pinnedCheck : state => state.getDetails.postPinnedCheck
-        }),
         ...mapState([
-            'profileImage'
-        ]),
-        ...mapGetters([
-            'content',
-            'post',
-            'postpackageName'
-        ]),
-        // content(){return marked.parse(this.post.content)}
+            "post",
+            "userProfile"
+        ])
     },
     methods : {
         ...mapActions([
             'getPost',
-            'getPinnedCheck',
-            'updatePost',
-            'removePost',
-            'addPinned',
-            'removePinned',
+            "getProfile"
         ]),
-        ...mapMutations([
-            'RESET_POST',
-            'UPLOADPAGEACCESS_TRUE',
-            'PROJECTS',
-            'IMPORT_UPLOADEDPOST',
-            'FILLINPUT_VERIFY'
-        ]),
-        controllToggleActive(){
-            this.controllToggle = true
-            setTimeout(() => {
-                if(document.getElementById('viewPost-controll')){
-                    document.getElementById('viewPost-controll').focus()
-                }
-            } , 5)
-        },
-        viewPostDisablecontrol(){
-            this.controllToggle =false
-        },
-        editPost(){
-            this.UPLOADPAGEACCESS_TRUE()
-            this.PROJECTS('importUploadPost')
-            this.IMPORT_UPLOADEDPOST(this.post)
-            this.FILLINPUT_VERIFY()
-            // this.$router.push('/NewPost')
-        },
-        clickRemovePinned(){
-            this.removePinned(this.$route.params.post)
-            // setTimeout(()=>this.getPinnedCheck(this.$route.params.post),10)
-        },
-        clickAddPinned(){
-            this.addPinned(this.$route.params.post)
-            // this.getPinnedCheck(this.$route.params.post)
-            // setTimeout(()=>this.getPinnedCheck(this.$route.params.post),10)
-        }
     },
     mounted(){
         this.getPost(this.$route.params.post)
-        this.getPinnedCheck(this.$route.params.post)
+        this.getProfile()
+        // this.getPinnedCheck(this.$route.params.post)
     },
     beforeUnmount() {
-        this.RESET_POST()
+        // this.RESET_POST()
     },
 }
 </script>

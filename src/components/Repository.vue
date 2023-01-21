@@ -1,7 +1,7 @@
 <template>
   <div class = 'repository'>
       <div class = 'titleWrap'>
-          <span ><!--@click="$router.push(`/post/${post.key}`)"-->
+          <span @click = "$router.push(`/post/${url}`)"><!--@click="$router.push(`/post/${post.key}`)"-->
               {{title}}
           </span>
       </div>
@@ -10,7 +10,7 @@
       </div>
         
       <div class = 'repo-tags' v-if = "tags.length > 0">
-          <div class = 'tag' v-for = 'tag in tags' :key = 'tag'>{{tag}}</div>
+          <div class = 'tag' v-for = 'tag in tags' :key = 'tag' @click="() => tagSelect(tag)">{{tag}}</div>
       </div>
       <div class = 'repo-info'>
           <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div> -->
@@ -33,7 +33,16 @@ export default {
         },
         description : {
             type : String
+        },
+        url : {
+            type : String
         }
+    },
+    methods : {
+        tagSelect(tag){
+
+        this.$router.push({path : "/Repositories" , query : {tag : tag}})
+    },
     }
 }
 </script>
@@ -50,7 +59,7 @@ export default {
     }
     .titleWrap>span:hover{
         text-decoration-line:underline;
-        text-underline-position: under;
+        /* text-underline-position: under; */
         cursor: pointer;
     }
     .titleWrap>span:nth-child(1){
@@ -79,6 +88,11 @@ export default {
         border-radius: 14px;
         color: #0969DA;
         font-weight: 500;
+        cursor: pointer;
+    }
+    .tag:hover{
+        background-color: #0A69DA;
+        color: white;
     }
     .repo-info{
         /* margin-top: 12px; */

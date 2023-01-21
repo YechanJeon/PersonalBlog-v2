@@ -25,7 +25,7 @@ export default createStore({
 
     user : {
       github : "YechanJeon",
-      velog : "yechann_",
+      velog : "bepyan",
     },
     host : "http://localhost:3000/",
     userProfile : {
@@ -34,7 +34,9 @@ export default createStore({
     posts : [],
     projects : [],
     tags : [],
-    postsCount : 0
+    postsCount : 0,
+    selectedTag : "",
+    post : {},
   },
   mutations : {
     // async GET_PACKAGE(state , key){
@@ -57,9 +59,10 @@ export default createStore({
     },
     GET_POSTS(state,posts){
       state.posts = posts.posts
-      if(posts.count){
+      if(posts.count || posts.count === 0){
         state.postsCount = posts.count
       }
+      
       // if(tag){
       //   state.tag.map(ele => {
       //     if (ele.name === tag){
@@ -81,6 +84,17 @@ export default createStore({
     },
     RESET_POSTSCOUNT(state){
       state.postsCount = -1
+    },
+    TAG_SELECT(state,tag){
+      if(tag){
+        state.selectedTag = tag
+      }else{
+        state.selectedTag = ""
+      }
+    },
+    GET_POST(state,post){
+      console.log(post)
+      state.post = post
     }
   },
 
@@ -112,7 +126,11 @@ actions : {
   },
   async getTags({state,commit}){
     commit("GET_TAGS" , (await axios.get(`${state.host}tags/${state.user.velog}`)).data.data.userTags.tags)
-  }
+  },
+  async getPost({state,commit},url){
+    console.log(url)
+    commit("GET_POST" , (await axios.get(`${state.host}post/${state.user.velog}/${url}`)).data)
+  },
 },
 getters : {
   postSearch : state => state.postSearch,

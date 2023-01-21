@@ -14,7 +14,9 @@
     :key = "post.id" 
     :title = "post.title" 
     :description = "post.short_description" 
-    :tags = "post.tags" />
+    :tags = "post.tags"
+    :url = "post.url_slug"
+    />
   </div>
 </template>
 

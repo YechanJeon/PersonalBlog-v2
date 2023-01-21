@@ -4,7 +4,7 @@
             <div class ='project-title' >{{name}}</div> <!--<div :style = "{background : project.color}" />-->
             <div class = 'project-contents'> {{description}}</div>
             <div class = 'project-Toggles'>
-                <div class = 'project-button' >프로젝트 살펴보기</div><!--@click = 'projectDetailPage'-->
+                <div class = 'project-button' @click = "$router.push(`/project/${url}`)">프로젝트 살펴보기</div><!--@click = 'projectDetailPage'-->
 
 
                 <!-- <div id = 'project-controlTogle' @mousedown="PROJECTTOGGLE_ACTIVE(project.key)" v-if = '$cookies.get("admin")'>
@@ -32,6 +32,9 @@ export default {
             type : String
         },
         description : {
+            type : String
+        },
+        url : {
             type : String
         }
     }

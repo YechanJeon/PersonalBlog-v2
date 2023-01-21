@@ -221,10 +221,10 @@ const uploadStore = {
             console.log('게시글 정보 불러오기 완료')
             router.push('/NewPost')
         },
-        async getProjects({commit}){
-            const projects = (await axios.get(`${store.state.host}packages`)).data
-            commit('PROJECTS' , projects)
-        },
+        // async getProjects({commit}){
+        //     const projects = (await axios.get(`${store.state.host}packages`)).data
+        //     commit('PROJECTS' , projects)
+        // },
         async postProjects({dispatch} , {name , color}){
             await axios.post(`${store.state.host}package`, {
                 name : name , 

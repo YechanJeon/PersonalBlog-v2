@@ -2,11 +2,11 @@
 
       <!-- <ProjectSearch/> -->
   <div id = 'projects' v-if = 'projectSearch === ""'>
-      <Project v-for = 'project in projects' :key = "project.key" :name = 'project.name'></Project>
+      <Project v-for = 'project in projects' :key = "project.key" :name = 'project.name' :url = project.url_slug></Project>
   </div>
-  <div id = 'projects' v-else>
+  <!-- <div id = 'projects' v-else>
       <Project v-for = 'project in searchedProjects' :key = "project.key" :project = 'project'></Project>
-  </div>
+  </div> -->
   
 </div>
 </template>
