@@ -135,16 +135,4 @@ actions : {
 
   // }
 },
-getters : {
-  postSearch : state => state.postSearch,
-  projectSearch : state => state.projectSearch
-},
-  modules: {
-    // markdownEditStore,
-    // uploadStore,
-    // overviewActions,
-    // getDetails,
-    // updates,
-    // editProject
-  }
 })

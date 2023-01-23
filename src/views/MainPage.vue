@@ -4,7 +4,9 @@
       <div id = 'contentsWrap'>
         <div id = 'contents'>
           <Profile />
-          <router-view class = 'mainContents'/>
+          <Suspense>
+            <router-view class = 'mainContents'/>
+          </Suspense>
         </div>
       </div>
     </div>

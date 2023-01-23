@@ -1,11 +1,11 @@
 <template>
   <div id = "menuBarWrap">
       <div id = 'menuBar'>
-          <router-link to="/"><div class = "menuSelect">Overview</div></router-link>
+          <router-link to="/"><div class = "menuSelect"><div><div class="menuSelect-icon"></div><div class="menuSelect-text">Overview</div></div></div></router-link>
 
-          <router-link to = "/Repositories"><div class = "menuSelect">Repositories</div></router-link>
+          <router-link to = "/Repositories"><div class = "menuSelect"><div><div class="menuSelect-icon"></div><div class="menuSelect-text">Repositories</div></div></div></router-link>
 
-          <router-link to = "/Projects"><div class = "menuSelect">Projects</div></router-link>
+          <router-link to = "/Projects"><div class = "menuSelect"><div><div class="menuSelect-icon"></div><div class="menuSelect-text">Projects</div></div></div></router-link>
 
       </div>
     </div>
@@ -69,10 +69,27 @@ export default {
         align-items: center;
         height: 48px;
         font-size: 14px;
-        padding: 8px 16px 8px 16px;
+        padding:16px 0;
         color: #57606A;
         text-decoration: none;
         font-weight: 500;
+        margin-right: 8px;
+    }
+    .menuSelect>div{
+        display: flex;
+        padding: 0 8px;
+        height: 30px;
+        align-items: center;
+    }
+    .menuSelect>div:hover{
+        background: #F0F2F5;
+        border-radius: 6px;
+    }
+    .menuSelect-icon{
+        width: 16px;
+        height: 16px;
+        background-color: aqua;
+        margin-right: 8px;
     }
     .router-link-exact-active>.menuSelect{
         border-bottom: 2px solid orange;

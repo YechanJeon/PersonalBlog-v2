@@ -13,32 +13,65 @@
             <div class = 'repo-tags' v-if = "info.tags">
                 <div class = 'tag' v-for = 'tag in info.tags' :key = 'tag' @click="() => tagSelect(tag)">{{tag}}</div>
             </div>
-            <div class = 'repo-info'>
-                <!-- <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : post.package.color}" @click="$router.push(`/project/${post.package.key}`)"></div> -->
-                <div class = 'pinnedPostPackageCircle' :style = "{ backgroundColor : projectColor}"></div>
-                <span @click="$router.push(`/project/${info.series.url_slug}`)" v-if="info.series" style ="margin-right : 16px">
+            <div class = 'repo-info' v-if="info.series">
+                <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : info.series.color}"></div>
+                <span @click="$router.push(`/project/${info.series.url_slug}`)"  style ="margin-right : 16px">
                     {{info.series.name}}
                 </span>
-                <div>
-                    {{ info.released_at }}
+                <div class = "repository-heart">
+                    <div></div>
+                    {{info.likes}}
+                </div>
+                <div class = "repoistory-date">
+                    <!-- {{ info.released_at }} -->
+                    {{ uploadDate }}
                 </div>
             </div>
             <!-- {{ info }} -->
         </div>
-        <div class = "repository-heart">
+        <div class = "repository-heart-button">
             <div></div>
             Stars
         </div>
     </div>
 </template>
-
 <script>
 import axios from "axios"
 import {mapState} from "vuex"
+import dayjs from "dayjs"
 export default {
     
     computed : {
-        ...mapState(["host" , "user"])
+        ...mapState(["host" , "user"]),
+        uploadDate(){
+            const uploadDate = dayjs(this.info.released_at)
+            const currentDate = dayjs()
+            const timeGap  = (option) => {
+                if(option === "day"){
+                    if(currentDate.diff(uploadDate,"day") < 8){
+                    return currentDate.get("date")  - uploadDate.get("date")
+                }else{
+                    return 100
+                }
+                }
+                return currentDate.diff(uploadDate,option)
+            }   
+
+            if(timeGap("minute") < 1){
+                return "Now"
+            }else if(timeGap("hour") < 1){
+                return `Uploaded ${timeGap("minute")} minute ago`
+            }else if(timeGap("hour") < 24){
+                // return `${ti}`
+                return (`Uploaded ${timeGap("hour")} hours ago`)
+            }else if(timeGap("day") < 8){
+                return (`Uploaded ${timeGap("day")} days ago`)
+            }else{
+                return `Uploaded on ${uploadDate.format("MMM")} ${uploadDate.get("date")}, ${uploadDate.get("year")}`
+            }
+
+
+        }
     },
     data() {
         return{
@@ -53,14 +86,11 @@ export default {
     },
     methods : {
         tagSelect(tag){
-        this.$router.push({path : "/Repositories" , query : {tag : tag}})
+            this.$router.push({path : "/Repositories" , query : {tag : tag}})
         },
     },
     async mounted() {
-        console.log(this.url)
         this.info = (await axios.get(`${this.host}post/simple/${this.user.velog}/${this.url}`)).data.data.post
-    
-        this.projectColor = (await axios.get(`${this.host}series/${this.user.velog}/${this.info.series.url_slug}`)).data.data.series.color
     },
 }
 </script>
@@ -127,7 +157,7 @@ export default {
         text-underline-position: under;
         cursor: pointer;
     }
-    .repository-heart{
+    .repository-heart-button{
         /* width: 30px; */
         display: flex;
         height: 28px;
@@ -136,7 +166,7 @@ export default {
         align-items: center;
         padding: 3px 12px;
     }
-    .repository-heart>div:nth-child(1){
+    .repository-heart-button>div:nth-child(1){
         width: 16px;
         height: 16px;
         background-color: #0969DA;
@@ -146,5 +176,14 @@ export default {
         border-bottom: 1px solid #D0D7DE;
         display: flex;
         align-items: center;
+    }
+    .repository-heart{
+        margin-right: 16px;
+        display: flex;
+    }
+    .repository-heart>div{
+        width: 16px;
+        height: 16px;
+        background-color: green;
     }
 </style>

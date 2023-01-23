@@ -1,26 +1,19 @@
 <template>
-  <div>
-    <PostSearch/>
-      
-    <!-- <div v-if = 'postSearch === ""'>
-    <Repository v-for = 'post in posts' :key = 'post.key' :post="post"/>
-    
+
+    <div>
+      <PostSearch/>
+      <Repository 
+      v-for = "post in posts"  
+      :key = "post.id" 
+      :url = "post.url_slug"
+      />
     </div>
-    <div v-else>
-      <Repository v-for = 'post in searchedPost' :key = 'post.key' :post="post"/>
-    </div> -->
-    <Repository 
-    v-for = "post in posts"  
-    :key = "post.id" 
-    :url = "post.url_slug"
-    />
-  </div>
 </template>
 
 <script>
 import PostSearch from '../components/PostSearch.vue'
 import Repository from '../components/Repository.vue'
-import {mapActions , mapState , mapGetters} from 'vuex'
+import {mapActions , mapState} from 'vuex'
 export default {
   data(){
     return{
@@ -32,7 +25,7 @@ export default {
       'getPosts'
     ])
   },
-  mounted(){
+  async mounted(){
     this.getPosts()
     document.title = 'Repositories'
   },
@@ -40,20 +33,7 @@ export default {
     ...mapState([
       "posts"
     ]),
-    ...mapGetters([
-      'postSearch'
-    ])
     
-  },
-  watch : {
-    postSearch(){
-      this.searchedPost = []
-      this.posts.map(e => {
-        if(e.title.indexOf(this.postSearch) !== -1){
-          this.searchedPost.push(e)
-        }
-      })
-    }
   },
   components:{
     PostSearch,

@@ -3,18 +3,11 @@
       <ReadMe/>
       <div style = 'margin-bottom : 8px; margin-top :30px' v-if = "pinnedPosts.length !== 0">Pinned</div>
       <div id = 'pinnedWrap'>
-        <!-- <Pinned/>
-        <Pinned/>
-        <Pinned/>
-        <Pinned/> -->
-        <!-- {{ pinnedPosts }} -->
         <Pinned 
         v-for = "post in pinnedPosts" 
-        :key = 'post.id'
-        :title = 'post.title'
-        :description = "post.short_description"
+        :key = 'post.url_slug'
+        :url = "post.url_slug"
         ></Pinned>
-        <!-- <div v-for="post in pinnedPostsa" :key = "post.key">{{post}}</div> -->
     </div> 
   </div>
 </template>
