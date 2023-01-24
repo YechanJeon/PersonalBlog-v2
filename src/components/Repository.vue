@@ -123,6 +123,10 @@ export default {
     .repo-tags{
         display: flex;
         margin-bottom: 12px;
+        overflow-y: scroll;
+    }
+    .repo-tags::-webkit-scrollbar {
+        display: none;
     }
     .tag{
         margin: 4px 1.5px 4px 0;
@@ -136,6 +140,7 @@ export default {
         color: #0969DA;
         font-weight: 500;
         cursor: pointer;
+        white-space: nowrap;
     }
     .tag:hover{
         background-color: #0A69DA;
@@ -154,7 +159,7 @@ export default {
     }
     .repo-info>span:nth-child(2):hover{
         text-decoration-line:underline;
-        text-underline-position: under;
+        text-underline-position: underline;
         cursor: pointer;
     }
     .repository-heart-button{

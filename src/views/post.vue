@@ -3,10 +3,10 @@
       <div>
         <div>
             <div id = 'viewPost-mainInfos'>
-                <!-- <div id = 'viewPost-packageInfos'>
-                    <div :style = "{backgroundColor : post.packageColor}"></div>
-                    {{post.packageName}}
-                </div> -->
+                <div id = 'viewPost-packageInfos'  v-if = "post.series">
+                    <div :style = "{backgroundColor : post.series.color}"></div>
+                    {{post.series.name}}
+                </div>
                 
                 <div id = 'viewPost-title'>{{post.title}}</div>
             </div>
@@ -20,14 +20,21 @@
                     </div>
                     <div>
                         <div id ='viewPost-InfoName'>{{userProfile.name}}</div>
-                        <!-- <div id ='viewPost-InfoDate'>{{post.date}}</div> -->
+                        <div id ='viewPost-InfoDate'>{{uploadDate}}</div>
                     </div>
                 </div>
             </div>
+            <div class = 'repo-tags' v-if = "post.tags">
+                <div class = 'tag' style = "margin-right : 3.5px" v-for = 'tag in post.tags' :key = 'tag' >{{tag}}</div>
+            </div>
 
             <!-- {{ post.content }} -->
-            <div id = 'viewPost-content' v-html="post.content">
+            <div id = "thumbnail-wrap">
+                <img :src = "post.thumbnail"> 
             </div>
+            <!-- <div id = 'viewPost-content' v-html="post.content"></div> -->
+            <CommentsLayout :comments = "post.comments" :count = "post.comments_count"/>
+            <!-- {{ post.comments }} -->
         </div>
       </div>
   </div>
@@ -35,7 +42,8 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
-// import momnet from 'moment'
+import dayjs from "dayjs"
+import CommentsLayout from "../components/CommentsLayout.vue"
 export default {
     data(){
         return{
@@ -47,7 +55,36 @@ export default {
         ...mapState([
             "post",
             "userProfile"
-        ])
+        ]),
+        uploadDate(){
+            const uploadDate = dayjs(this.post.released_at)
+            const currentDate = dayjs()
+            const timeGap  = (option) => {
+                if(option === "day"){
+                    if(currentDate.diff(uploadDate,"day") < 8){
+                    return currentDate.get("date")  - uploadDate.get("date")
+                }else{
+                    return 100
+                }
+                }
+                return currentDate.diff(uploadDate,option)
+            }   
+
+            if(timeGap("minute") < 1){
+                return "Now"
+            }else if(timeGap("hour") < 1){
+                return `Uploaded ${timeGap("minute")} minute ago`
+            }else if(timeGap("hour") < 24){
+                // return `${ti}`
+                return (`Uploaded ${timeGap("hour")} hours ago`)
+            }else if(timeGap("day") < 8){
+                return (`Uploaded ${timeGap("day")} days ago`)
+            }else{
+                return `Uploaded on ${uploadDate.format("MMM")} ${uploadDate.get("date")}, ${uploadDate.get("year")}`
+            }
+
+
+        }
     },
     methods : {
         ...mapActions([
@@ -60,9 +97,9 @@ export default {
         this.getProfile()
         // this.getPinnedCheck(this.$route.params.post)
     },
-    beforeUnmount() {
-        // this.RESET_POST()
-    },
+    components : {
+        CommentsLayout
+    }
 }
 </script>
 
@@ -128,6 +165,7 @@ export default {
     #viewPost-title{
         font-size: 2.5em;
         font-weight: 600;
+        margin-top: 6px;
     }
     #viewPost-packageInfos{
         display: flex;
@@ -143,12 +181,12 @@ export default {
         margin-top: 40px;
     }
     #viewPost-infos{
-        margin-top: 12px;
+        margin-top: 25px;
         display: flex;
         flex-direction: row;
         align-items: flex-end;
-        border-bottom: 1px solid #D0D7DE;
-        padding-bottom: 20px;
+        /* border-bottom: 1px solid #D0D7DE; */
+        padding-bottom: 10px;
         justify-content: space-between;
     }
     #viewPost-profile{
@@ -222,6 +260,15 @@ export default {
         max-width: 100%;
     }
     p>img{
+        max-width: 100%;
+    }
+    #thumbnail-wrap{
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 40px 0 60px 0;
+    }
+    #thumbnail-wrap>img{
         max-width: 100%;
     }
 </style>

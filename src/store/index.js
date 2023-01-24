@@ -128,8 +128,10 @@ actions : {
     commit("GET_TAGS" , (await axios.get(`${state.host}tags/${state.user.velog}`)).data.data.userTags.tags)
   },
   async getPost({state,commit},url){
-    console.log(url)
-    commit("GET_POST" , (await axios.get(`${state.host}post/detail/${state.user.velog}/${url}`)).data)
+    // commit("GET_POST" , (await axios.get(`${state.host}post/detail/${state.user.velog}/${url}`)).data)
+    // commit("GET_POST" , (await axios.get(`${state.host}post/detail/velopert/react-native-1year-review`)).data)
+    commit("GET_POST" , (await axios.get(`${state.host}post/detail/yuuuye/velog-마크다운MarkDown-작성법`)).data)
+
   },
   // async getProject({state , commit} , url){
 

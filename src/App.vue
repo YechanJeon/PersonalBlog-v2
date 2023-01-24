@@ -39,6 +39,7 @@ export default {
   *{
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     box-sizing: border-box;
+    color: #24292F;
   }
   body{
     margin: 0;
@@ -50,7 +51,7 @@ export default {
     /* display: inline; */
   }
   p{
-    font-weight: 400;
+    font-weight: 300;
   }
   textarea{
     resize : none;
@@ -78,8 +79,26 @@ export default {
     height: 1px;
     border: 0;
     border-top: 1px solid #D7D0DE;
-    margin: 1em 0;
+    margin: 3em 0;
     padding: 0;
+  }
+  h1{
+    font-size: 2.5rem;
+  }
+  h2{
+    font-size: 2rem;
+  }
+  h3{
+    font-size: 1.5rem;
+  }
+  h4{
+    font-size: 1.125rem;
+  }
+  h5{
+    font-size: 0.83rem;
+  }
+  h6{
+    font-size: 0.67rem;
   }
 
 

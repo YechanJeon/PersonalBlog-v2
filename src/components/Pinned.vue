@@ -69,7 +69,7 @@ export default {
     }
     #pinnedTitle:hover{
         text-decoration-line:underline;
-        text-underline-position: under;
+        text-underline-position: underline;
         cursor: pointer;
     }
     #pinnedContents{
@@ -85,7 +85,7 @@ export default {
     }
     #pinnedInfo:hover{
         text-decoration-line:underline;
-        text-underline-position: under;
+        text-underline-position: underline;
         cursor: pointer;
     }
     .pinnedPPostPackageCircle{
