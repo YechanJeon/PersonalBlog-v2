@@ -39,7 +39,7 @@
 <script setup>
 import {useStore} from 'vuex'
 import {useRoute} from "vue-router"
-import { onMounted , computed , ref } from 'vue'
+import { onMounted , onUnmounted , computed , ref } from 'vue'
 import dayjs from "dayjs"
 import CommentsLayout from "../components/CommentsLayout.vue"
 import PostIndex from "../components/PostIndex.vue"
@@ -47,10 +47,22 @@ import PostIndex from "../components/PostIndex.vue"
     const store = useStore();
     const route = useRoute()
 
+    
     let post = ref(null)
     let userProfile = ref(null)
-    userProfile.value = await store.dispatch("getProfile")
-    post.value = await store.dispatch("getPost" , route.params.post)
+
+    if(store.state.post.title){
+        post.value = store.state.post
+        console.log("있던 값 가져다 씁니다 ~    ")
+    }else{
+        post.value = await store.dispatch("getPost" , route.params.post)
+    }
+    if(store.state.userProfile.name){
+        userProfile.value = store.state.userProfile
+    }else{
+        userProfile.value = await store.dispatch("getProfile")
+    }
+    
     const uploadDate = computed(() => {
         const uploadDate = dayjs(post.value.released_at)
         const currentDate = dayjs()
@@ -82,6 +94,10 @@ import PostIndex from "../components/PostIndex.vue"
 
     onMounted(()=>{
         console.log(document.getElementsByTagName("h1"))
+    })
+
+    onUnmounted(() => {
+        store.commit("RESET_POST")
     })
         
 </script>

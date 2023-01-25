@@ -12,12 +12,12 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Profile from '../components/Profile.vue'
 import MenuBar from '../components/MenuBar.vue'
-export default {
-  mounted(){
-      window.addEventListener('scroll' , () => {
+import { onMounted } from 'vue';
+  onMounted(()=>{
+    window.addEventListener('scroll' , () => {
         if(document.getElementById('menuBarWrap')){
         if(document.documentElement.scrollWidth > 767){ // pc웹
           if(window.pageYOffset > 62){
@@ -63,14 +63,8 @@ export default {
       페이지가 변해 제어하려는 dom 이 null값을 반환하면서 오류가 뜸
 
        */
-  },
-  components : {
-    Profile,
-    MenuBar
-  },
-  methods: {
-  },
-}
+  })
+      
 </script>
 
 <style>

@@ -12,31 +12,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ReadMe from '../components/ReadMe.vue'
 import Pinned from '../components/Pinned.vue'
-import {mapActions , mapState} from 'vuex'
-export default {
-    components : {
-        ReadMe,
-        Pinned
-    },
-    methods : {
-        ...mapActions([
-            'getPinnedPosts',
-        ]),
-    },
-    mounted() {
-        this.getPinnedPosts()
-         document.title = 'YechanJeon - Blog'
-    },
-    computed : {
-        ...mapState([
-            "pinnedPosts",
-        ])
-       
-    },
+// import {mapActions , mapState} from 'vuex'
+import { useStore } from 'vuex';
+import { ref, onMounted } from 'vue';
+const store = useStore();
+let pinnedPosts = ref([])
+if(store.state.pinnedPosts.length!==0){
+    pinnedPosts.value = store.state.pinnedPosts
+}else{
+    store.dispatch("getPinnedPosts").then(data => {
+        pinnedPosts.value = data
+    })
 }
+onMounted(() => {
+    document.title = 'YechanJeon - Blog'
+})
 </script>
 
 <style>

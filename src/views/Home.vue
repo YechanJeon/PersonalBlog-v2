@@ -7,15 +7,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
 
 import Header from '../components/Header.vue'
 
-export default {
-  components : {
-    Header,
-  },
-}
 
 </script>
 

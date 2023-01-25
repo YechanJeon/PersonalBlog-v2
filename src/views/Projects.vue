@@ -8,40 +8,21 @@
 </div>
 </template>
 
-<script>
+<script setup>
 import Project from '../components/Project'
 // import ProjectSearch from '../components/ProjectSearch.vue'
 import {mapActions,  mapState} from 'vuex'
-export default {
-  data(){
-    return{
-      searchedProjects : []
-    }
-  },
-  methods : {
-    ...mapActions(['getProjects'])
-  },
-  mounted(){
-    this.getProjects()
-    document.title = 'Projects'
-  },
-  computed:{
-    ...mapState(["projects"]),
-  },
-  components:{
-    Project,
-  },
-  // watch : {
-  //   projectSearch(){
-  //     this.searchedProjects = []
-  //     this.projects.map(e=>{
-  //       if(e.name.indexOf(this.projectSearch) !== -1){
-  //         this.searchedProjects.push(e)
-  //       }
-  //     })
-  //   }
-  // }
-}
+import {useStore} from "vuex"
+import { ref } from 'vue'
+const store = useStore()
+let projects = ref([])
+  if(store.state.projects.length!== 0){
+
+    projects.value = store.state.projects
+    console.log("asdf")
+  }else{
+    store.dispatch("getProjects").then(data =>projects.value = data)
+  }
 </script>
 
 <style>

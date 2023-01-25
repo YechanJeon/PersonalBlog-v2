@@ -7,39 +7,23 @@
       :key = "post.id" 
       :url = "post.url_slug"
       />
+      {{ posts }}
     </div>
 </template>
 
-<script>
+<script setup>
 import PostSearch from '../components/PostSearch.vue'
 import Repository from '../components/Repository.vue'
-import {mapActions , mapState} from 'vuex'
-export default {
-  data(){
-    return{
-      searchedPost : []
-    }
-  },
-  methods : {
-    ...mapActions([
-      'getPosts'
-    ])
-  },
-  async mounted(){
-    this.getPosts()
-    document.title = 'Repositories'
-  },
-  computed : {
-    ...mapState([
-      "posts"
-    ]),
-    
-  },
-  components:{
-    PostSearch,
-    Repository,
-  }
-}
+import { useStore } from 'vuex'
+// import {mapActions , mapState} from 'vuex'
+import { ref } from 'vue'
+const store = useStore()
+
+let posts = ref([])
+
+store.dispatch("getPosts").then(data => {
+  posts.value = data
+})
 </script>
 
 <style>

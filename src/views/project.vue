@@ -24,26 +24,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Repository from '../components/Repository.vue'
-import {mapState} from 'vuex'
-import axios from "axios"
-export default {
-    computed : {
-        ...mapState(["host" , "user"])
-    },
-    data(){
-        return{
-            info : {}
-        }
-    },
-    components: { Repository },
-    async mounted() {
-        this.info = (await axios.get(`${this.host}series/${this.user.velog}/${this.$route.params.project}`)).data.data.series
-        console.log(this.info)
-    },
+import {useStore} from "vuex"
+import {ref , computed} from "vue"
+import {useRoute} from 'vue-router'
+import axios from 'axios';
+const store = useStore()
+const route = useRoute()
 
-}
+const host = computed(()=> store.state.host)
+const velogID = computed(()=> store.state.user.velog)
+
+let info = ref({})
+
+
+axios.get(`${host.value}series/${velogID.value}/${route.params.project}`).then(data => {
+    info.value = data.data.data.series
+})
 </script>
 
 <style>

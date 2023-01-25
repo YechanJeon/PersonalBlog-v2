@@ -107,7 +107,9 @@ actions : {
     return profile
   },
   async getPinnedPosts({state, commit}){ 
-    commit("GET_PINNEDPOSTS",(await axios.get(`${state.host}posts/${state.user.velog}?tag=pinned`)).data.posts)
+    const posts = (await axios.get(`${state.host}posts/${state.user.velog}?tag=pinned`)).data.posts
+    commit("GET_PINNEDPOSTS", posts)
+    return posts
   },
   async getPosts({state,commit} , tag){ 
     let posts = (await axios.get(`${state.host}posts/${state.user.velog}?tag=${tag}`)).data
@@ -118,15 +120,20 @@ actions : {
         }
       })
       commit("GET_POSTS", posts)
+      return posts
     }else{
-      commit("GET_POSTS",(await axios.get(`${state.host}posts/${state.user.velog}`)).data)
+      let posts_notag = (await axios.get(`${state.host}posts/${state.user.velog}`)).data.posts
+      commit("GET_POSTS", posts_notag)
+      return posts_notag
     }
   },
   async getSearchedPosts({state,commit},keyword){
     commit("GET_POSTS",((await axios.get(`${state.host}posts/search/${state.user.velog}?keyword=${keyword}`)).data.data.searchPosts))
   },
   async getProjects({state, commit}){
-    commit("GET_PROJECTS",(await axios.get(`${state.host}series/${state.user.velog}`)).data.series_list)
+    const projects = (await axios.get(`${state.host}series/${state.user.velog}`)).data.series_list
+    commit("GET_PROJECTS", projects)
+    return projects
   },
   async getTags({state,commit}){
     commit("GET_TAGS" , (await axios.get(`${state.host}tags/${state.user.velog}`)).data.data.userTags.tags)
