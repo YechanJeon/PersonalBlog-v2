@@ -1,7 +1,7 @@
 <template>
   <div id = 'pinned'>
       <!-- {{post}} -->
-      <span id = 'pinnedTitle' @click = "$router.push(`/post/${url}`)"> <!--@click = '$router.push(`/post/${post.key}`)'-->
+      <span id = 'pinnedTitle' @click = "routerPost"> <!--@click = '$router.push(`/post/${post.key}`)'-->
           {{info.title}}
       </span>
       <div id = 'pinnedContents'>
@@ -20,34 +20,32 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios"
-import {mapState} from "vuex"
-export default {
-    computed : {
-        ...mapState(["host","user"]),
-    },
-    data(){
-        return{
-            info : {}
-        }
-    },
-    props : {
-        title : {
-            type : String
-        },
-        description : {
-            type : String
-        },
-        url : {
-            type : String
-        }
+import {useStore} from "vuex"
+import { defineProps, computed , ref } from "vue"
+import { useRouter } from "vue-router";
 
-    },
-    async mounted() {
-        this.info = (await axios.get(`${this.host}post/simple/${this.user.velog}/${this.url}`)).data.data.post
-    },
-}
+const store = useStore()
+const router = useRouter()
+
+const host = computed(()=> store.state.host)
+const velogID = computed(()=> store.state.user.velog)
+
+
+const props = defineProps({
+    url : String
+})
+
+let info = ref({})
+
+axios.get(`${host.value}post/simple/${velogID.value}/${props.url}`).then(data => {
+    info.value = data.data.data.post
+})
+
+const routerPost = () => {
+    router.push(`/post/${props.url}`)
+} 
 </script>
 
 <style>

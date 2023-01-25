@@ -11,16 +11,16 @@ import axios from 'axios'
 
 export default createStore({
   state : {
-    project : {
-      name : '',
-      color : '',
-    },
-    // host : 'http://13.125.217.17/',
-    postSearch : '',
-    projectSearch : '',
-    tagSearchedPosts : [],
-    searchSelsectedTags : '',
-    profileImage : 'http://yechan-personalblog.s3-website.ap-northeast-2.amazonaws.com/1646830399652.jpeg',
+    // project : {
+    //   name : '',
+    //   color : '',
+    // },
+    // // host : 'http://13.125.217.17/',
+    // postSearch : '',
+    // projectSearch : '',
+    // tagSearchedPosts : [],
+    // searchSelsectedTags : '',
+    // profileImage : 'http://yechan-personalblog.s3-website.ap-northeast-2.amazonaws.com/1646830399652.jpeg',
 
 
     user : {
@@ -28,8 +28,7 @@ export default createStore({
       velog : "yechann_",
     },
     host : "http://localhost:3000/",
-    userProfile : {
-    },
+    userProfile : {},
     pinnedPosts : [],
     posts : [],
     projects : [],
@@ -93,14 +92,19 @@ export default createStore({
       }
     },
     GET_POST(state,post){
-      console.log(post)
+      // console.log(post)
       state.post = post
+    },
+    RESET_POST(state){
+      state.post = {}
     }
   },
 
 actions : {
   async getProfile({state , commit}){
-    commit("GET_PROFILE",(await axios.get(`${state.host}profile/${state.user.github}`)).data)
+    const profile = (await axios.get(`${state.host}profile/${state.user.github}`)).data
+    commit("GET_PROFILE",profile)
+    return profile
   },
   async getPinnedPosts({state, commit}){ 
     commit("GET_PINNEDPOSTS",(await axios.get(`${state.host}posts/${state.user.velog}?tag=pinned`)).data.posts)
@@ -127,11 +131,13 @@ actions : {
   async getTags({state,commit}){
     commit("GET_TAGS" , (await axios.get(`${state.host}tags/${state.user.velog}`)).data.data.userTags.tags)
   },
-  async getPost({state,commit},url){
-    // commit("GET_POST" , (await axios.get(`${state.host}post/detail/${state.user.velog}/${url}`)).data)
+  async getPost({state,commit},url){//url
+    let post = (await axios.get(`${state.host}post/detail/${state.user.velog}/${url}`)).data
+    commit("GET_POST" , post)
+    return post
     // commit("GET_POST" , (await axios.get(`${state.host}post/detail/velopert/react-native-1year-review`)).data)
-    commit("GET_POST" , (await axios.get(`${state.host}post/detail/yuuuye/velog-마크다운MarkDown-작성법`)).data)
-
+    // commit("GET_POST" , (await axios.get(`${state.host}post/detail/yuuuye/velog-마크다운MarkDown-작성법`)).data)
+    // commit("GET_POST" , (await axios.get(`${state.host}post/detail/hyunjine/왜-setState는-비동기적으로-동작하는가`)).data)
   },
   // async getProject({state , commit} , url){
 

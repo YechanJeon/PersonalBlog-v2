@@ -6,7 +6,7 @@ import Overview from '../views/Overview.vue'
 import Repositories from '../views/Repositories.vue'
 import Projects from '../views/Projects.vue'
 
-import post from '../views/post.vue'
+import Post from '../views/post.vue'
 import project from '../views/project.vue'
 // import EditProject from '../views/EditProject.vue'
 
@@ -29,6 +29,7 @@ import project from '../views/project.vue'
 //   }
 // }
 
+
 const routes = [
   {
     path : '/',
@@ -46,7 +47,7 @@ const routes = [
       },
       // {path : '/NewPost', component : NewPost, beforeEnter : loginAccess},//
       // {path : '/ImportPost' , component : ImportPost , beforeEnter : loginAccess},//
-      {path : '/post/:post' , component : post},
+      {path : '/post/:post' , component : <Post/>},
       {path : '/project/:project' , component : project},
       // {path : '/ProjectEdit' , component : EditProject , beforeEnter : loginAccess},//
       // {path : '/PostEdit', component : PostEdit , beforeEnter : loginAccess},//

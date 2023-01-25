@@ -1,26 +1,26 @@
 <template>
-    <div id = "profile">
-        <div>
-            <div id = "profileImg">
-                <img :src="userProfile.image" alt="">
-            </div>
-            <div id = 'names'>
-                <div id = 'profile-name'>{{ userProfile.name }}</div>
-                <div id = 'profile-id'>{{userProfile.id}}</div>   
-            </div>
-            
-        </div>
-        
-
-        
-        <div id = 'profile-bio'>{{ userProfile.bio }}</div>
-        <div>
-            <div class = 'profile-details' v-if = "userProfile.worksFor"><span></span><span>{{userProfile.worksFor}}</span></div>
-            <div class = 'profile-details' v-if  = "userProfile.homeLocation"><span></span><span>{{userProfile.homeLocation}}</span></div>
-            <div class = 'profile-details' v-if = "userProfile.url"><span></span><span>{{userProfile.url}}</span></div>
-            <div class = 'profile-details' v-if = "userProfile.twitter"><span></span><span>{{userProfile.twitter}}</span></div>
-        </div>
-    </div>
+                    <div id = "profile" v-if = "userProfile">
+                        <div>
+                            <div id = "profileImg">
+                                <img :src="userProfile.image" alt="">
+                            </div>
+                            <div id = 'names'>
+                                <div id = 'profile-name'>{{ userProfile.name }}</div>
+                                <div id = 'profile-id'>{{userProfile.id}}</div>   
+                            </div>
+                            
+                        </div>
+                        
+                
+                        
+                        <div id = 'profile-bio'>{{ userProfile.bio }}</div>
+                        <div>
+                            <div class = 'profile-details' v-if = "userProfile.worksFor"><span></span><span>{{userProfile.worksFor}}</span></div>
+                            <div class = 'profile-details' v-if  = "userProfile.homeLocation"><span></span><span>{{userProfile.homeLocation}}</span></div>
+                            <div class = 'profile-details' v-if = "userProfile.url"><span></span><span>{{userProfile.url}}</span></div>
+                            <div class = 'profile-details' v-if = "userProfile.twitter"><span></span><span>{{userProfile.twitter}}</span></div>
+                        </div>
+                    </div>
 </template>
 
 <script>
@@ -34,7 +34,7 @@ export default {
             "getProfile"
         ])
     },
-    mounted(){ 
+    mounted(){  
         this.getProfile()
     }
 }

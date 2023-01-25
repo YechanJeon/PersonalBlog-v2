@@ -17,8 +17,11 @@ export default {
   @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
   blockquote{
     margin: 0;
-    border-left: 5px solid black;
+    border-left: 5px solid #d8dee4;
     padding-left: 1em;
+  }
+  *{
+    letter-spacing: 0.1px;
   }
   a{
     text-decoration: none;
@@ -47,11 +50,15 @@ export default {
     overflow: overlay;
   }
   h1, h2, h3, h4, h5, h6{
-    font-weight: 700;
+    font-weight: 600;
+    line-height: 1.25;
     /* display: inline; */
+    margin-top: 24px;
+    margin-bottom: 16px;
+
   }
   p{
-    font-weight: 300;
+    font-weight: 400;
   }
   textarea{
     resize : none;
@@ -61,44 +68,60 @@ export default {
     outline: none;
   }
   pre{
-    background : #333333;
-    padding : 20px;
+    background : #F6F8FA;
+    padding : 16px;
+    font-size: 85%;
+    line-height: 1.45;
+    border-radius: 6px;
   }
   pre>code{
-    color: white!important;
+    color: rgb(0, 0, 0)!important;
     background-color: transparent!important;
     padding: 0 !important;
+    white-space: normal;
   }
   code{
-    background-color: #f9f2f4;
-    color: #c7254e;
+    background-color: #F6F8FA;
+    color: #000000;
     padding: 2px 4px;
   }
   hr{
     display: block;
-    height: 1px;
+    height: 0.25em;
+    margin: 24px 0;
     border: 0;
-    border-top: 1px solid #D7D0DE;
-    margin: 3em 0;
+    background: #D0D7DE;
     padding: 0;
   }
   h1{
-    font-size: 2.5rem;
+    padding-bottom: 0.3em;
+    font-size: 2em;
+    border-bottom: 1px #d8dee4 solid ;
   }
   h2{
-    font-size: 2rem;
+    padding-bottom: 0.3em;
+    font-size: 1.5em;
+    border-bottom: 1px #d8dee4 solid ;
   }
   h3{
-    font-size: 1.5rem;
+    font-size: 1.25em;
   }
   h4{
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
   h5{
-    font-size: 0.83rem;
+    font-size: 0.875em;
   }
   h6{
-    font-size: 0.67rem;
+    font-size: 0.85em;
+  }
+  p>img{
+    max-width: 100%;
+    max-height: 100%;
+  }
+  a>img{
+    max-width: 100%;
+    max-height: 100%;
   }
 
 

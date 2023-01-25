@@ -1,14 +1,5 @@
 <template>
     <div v-if = "comment">
-        <!-- <div>
-            <div>
-                <img :src = "comment.user.profile.thumbnail">
-            </div>
-            <div>
-                <div>{{ comment.user.username }}</div>
-                <div></div>
-            </div>
-        </div> -->
         <div class="comment-profile">
                     <div class ='comment-profileImage'>
                         <img :src="comment.user.profile.thumbnail" alt="">
@@ -20,6 +11,9 @@
                         <!-- <div id ='viewPost-InfoDate'>{{uploadDate}}</div> -->
                     </div>
                 </div>
+    </div>
+    <div v-else>
+        작성 된 댓글이 없습니다!
     </div>
 </template>
 
