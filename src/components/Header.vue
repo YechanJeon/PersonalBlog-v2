@@ -3,7 +3,9 @@
       <!-- <span style = 'color:white'>{{uploadPageAccess}}</span> -->
       <div id = 'header-left'>
        
-        <router-link to="/"> <div id = 'header-madinPage'></div></router-link>
+        <router-link to="/"> <div id = 'header-madinPage'>
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM7.6 8C6.71634 8 6 8.71634 6 9.6V19.6C6 22.0301 7.96995 24 10.4 24H17.2C19.6301 24 21.6 22.0301 21.6 19.6V18.665C21.6443 18.6661 21.6887 18.6667 21.7333 18.6667H22.6666C25.6121 18.6667 28 16.2789 28 13.3333C28 10.3878 25.6122 8 22.6666 8H21.7333C21.6887 8 21.6443 8.00055 21.6 8.00163V8H10.8H9.20001H7.6ZM21.7333 15.8667C21.6886 15.8667 21.6441 15.8655 21.6 15.8632V10.8034C21.6441 10.8012 21.6886 10.8 21.7333 10.8H22.6666C24.0658 10.8 25.2 11.9342 25.2 13.3333C25.2 14.7325 24.0658 15.8667 22.6666 15.8667H21.7333Z" fill="white"/></svg>
+        </div></router-link>
         <input type="text" placeholder="Search or jump to.." autocomplete='off'>
       </div>
       <div id = 'header-right'>
@@ -108,7 +110,7 @@ export default {
   #header-madinPage{
     width: 32px;
     height: 32px;
-    background: white;
+    /* background: white; */
     border-radius: 100%;
     margin-right: 16px;
   }
