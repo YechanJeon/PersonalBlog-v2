@@ -7,7 +7,6 @@
       :key = "post.id" 
       :url = "post.url_slug"
       />
-      {{ posts }}
     </div>
 </template>
 
@@ -16,14 +15,19 @@ import PostSearch from '../components/PostSearch.vue'
 import Repository from '../components/Repository.vue'
 import { useStore } from 'vuex'
 // import {mapActions , mapState} from 'vuex'
-import { ref } from 'vue'
+import { computed, onMounted } from 'vue'
 const store = useStore()
+onMounted(() => {
 
-let posts = ref([])
-
-store.dispatch("getPosts").then(data => {
-  posts.value = data
+  store.dispatch("getPosts")
 })
+let posts = computed(() => store.state.posts)
+
+// let posts = ref([])
+
+// store.dispatch("getPosts").then(data => {
+//   posts.value = data
+// })
 </script>
 
 <style>

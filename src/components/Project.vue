@@ -11,29 +11,21 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios"
-import { mapState } from "vuex";
-export default {
-    computed : {
-        ...mapState(["host" , "user"])
-    },
-    data(){
-        return{
-            info : {}
-        }
-    },
-    methods : {
-    },
-    props : {
-        url : {
-            type : String
-        }
-    },
-    async mounted(){
-        this.info = (await axios.get(`${this.host}series/${this.user.velog}/${this.url}`)).data.data.series
-    }
-}
+import {useStore} from "vuex"
+import {computed, ref , defineProps} from "vue"
+    const store = useStore()
+
+    const host = computed(() => store.state.host)
+    const velogID = computed(() => store.state.user.velog)
+    const props = defineProps({
+        url : String
+    })
+    let info = ref({})
+
+    axios.get(`${host.value}series/${velogID.value}/${props.url}`).then(data => info.value = data.data.data.series)
+    
 </script>
 
 <style>

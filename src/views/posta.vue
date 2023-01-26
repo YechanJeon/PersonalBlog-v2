@@ -25,11 +25,13 @@
                     <div class = 'repo-tags' v-if = "post.tags">
                         <div class = 'tag' style = "margin-right : 3.5px" v-for = 'tag in post.tags' :key = 'tag' >{{tag}}</div>
                     </div>
-                    <PostIndex :list = list></PostIndex>
+                    <PostIndex></PostIndex>
                     <div id = "thumbnail-wrap">
                         <img :src = "post.thumbnail"> 
                     </div>
                     <div id = 'viewPost-content' v-if ="post.content" v-html = "post.content"></div>
+                    <div id = "postLike"><div>Heart</div></div>
+                    <OtherPosts :posts = "post.linked_posts"></OtherPosts>
                     <CommentsLayout :comments = "post.comments" :count = "post.comments_count"/>
                 </div>
             </div>
@@ -39,29 +41,33 @@
 <script setup>
 import {useStore} from 'vuex'
 import {useRoute} from "vue-router"
-import { onMounted , onUnmounted , computed , ref } from 'vue'
+import {  onUnmounted , computed , ref } from 'vue'
 import dayjs from "dayjs"
 import CommentsLayout from "../components/CommentsLayout.vue"
 import PostIndex from "../components/PostIndex.vue"
+import OtherPosts from '../components/OtherPosts.vue'
 // import {marked} from "marked"
     const store = useStore();
     const route = useRoute()
 
-    
+    console.log(store.state.post)
     let post = ref(null)
+    // const post = computed(() => store.state.post)    
     let userProfile = ref(null)
 
     if(store.state.post.title){
-        post.value = store.state.post
-        console.log("있던 값 가져다 씁니다 ~    ")
+        post = computed(() => store.state.post)
     }else{
-        post.value = await store.dispatch("getPost" , route.params.post)
+        await store.dispatch("getPost" , route.params.post)
+        post = computed(() => store.state.post)
     }
     if(store.state.userProfile.name){
         userProfile.value = store.state.userProfile
     }else{
         userProfile.value = await store.dispatch("getProfile")
     }
+
+    console.log(post.value)
     
     const uploadDate = computed(() => {
         const uploadDate = dayjs(post.value.released_at)
@@ -90,10 +96,6 @@ import PostIndex from "../components/PostIndex.vue"
             return `Uploaded on ${uploadDate.format("MMM")} ${uploadDate.get("date")}, ${uploadDate.get("year")}`
         }
 
-    })
-
-    onMounted(()=>{
-        console.log(document.getElementsByTagName("h1"))
     })
 
     onUnmounted(() => {
@@ -269,5 +271,18 @@ import PostIndex from "../components/PostIndex.vue"
     }
     #thumbnail-wrap>img{
         max-width: 100%;
+    }
+    #postLike{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    #postLike>div{
+        width: 40px;
+        height: 40px;
+        background-color: green;
+    }
+    .overflow-hidden{
+        overflow: hidden;
     }
 </style>

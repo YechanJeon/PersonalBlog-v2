@@ -23,21 +23,12 @@
                     </div>
 </template>
 
-<script>
-import { mapActions, mapState } from 'vuex';
-export default {
-    computed : {
-        ...mapState(["userProfile"])
-    },
-    methods : {
-        ...mapActions([
-            "getProfile"
-        ])
-    },
-    mounted(){  
-        this.getProfile()
-    }
-}
+<script setup>
+import { computed } from 'vue';
+import {useStore} from "vuex"
+const store = useStore()
+store.dispatch("getProfile")
+const userProfile = computed(() => store.state.userProfile)
 </script>
 
 <style>

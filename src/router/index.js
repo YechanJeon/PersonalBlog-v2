@@ -8,6 +8,7 @@ import Projects from '../views/Projects.vue'
 
 import Post from '../views/post.vue'
 import project from '../views/project.vue'
+
 // import EditProject from '../views/EditProject.vue'
 
 // import NewPost from '../views/NewPost'
@@ -28,7 +29,6 @@ import project from '../views/project.vue'
 //     router.push('/')
 //   }
 // }
-
 
 const routes = [
   {

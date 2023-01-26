@@ -2,7 +2,7 @@
     <div class="repository-wrap">
         <div class = 'repository'>
             <div class = 'titleWrap'>
-                <span @click = "$router.push(`/post/${url}`)"><!--@click="$router.push(`/post/${post.key}`)"-->
+                <span @click = "routerPost(url)"><!--@click="$router.push(`/post/${post.key}`)"-->
                     {{info.title}}
                 </span>
             </div>
@@ -35,64 +35,63 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
 import axios from "axios"
-import {mapState} from "vuex"
+// import {mapState} from "vuex"
 import dayjs from "dayjs"
-export default {
-    
-    computed : {
-        ...mapState(["host" , "user"]),
-        uploadDate(){
-            const uploadDate = dayjs(this.info.released_at)
-            const currentDate = dayjs()
-            const timeGap  = (option) => {
-                if(option === "day"){
-                    if(currentDate.diff(uploadDate,"day") < 8){
-                    return currentDate.get("date")  - uploadDate.get("date")
-                }else{
-                    return 100
-                }
-                }
-                return currentDate.diff(uploadDate,option)
-            }   
+import {useStore} from "vuex"
+import {computed , defineProps , ref} from "vue"
+import { useRouter } from "vue-router"
 
-            if(timeGap("minute") < 1){
-                return "Now"
-            }else if(timeGap("hour") < 1){
-                return `Uploaded ${timeGap("minute")} minute ago`
-            }else if(timeGap("hour") < 24){
-                // return `${ti}`
-                return (`Uploaded ${timeGap("hour")} hours ago`)
-            }else if(timeGap("day") < 8){
-                return (`Uploaded ${timeGap("day")} days ago`)
-            }else{
-                return `Uploaded on ${uploadDate.format("MMM")} ${uploadDate.get("date")}, ${uploadDate.get("year")}`
-            }
+const store = useStore()
+const router = useRouter()
+const host = computed(() =>store.state.host)
+const velogID = computed(() => store.state.user.velog)
+const props = defineProps({
+    url : String
+})
+let info = ref({})
+const uploadDate = computed(() => {
+    const uploadDate = dayjs(info.value.released_at)
+    const currentDate = dayjs()
+    const timeGap  = (option) => {
+        if(option === "day"){
+            if(currentDate.diff(uploadDate,"day") < 8){
+            return currentDate.get("date")  - uploadDate.get("date")
+        }else{
+            return 100
+        }
+        }
+        return currentDate.diff(uploadDate,option)
+    }   
+
+    if(timeGap("minute") < 1){
+        return "Now"
+    }else if(timeGap("hour") < 1){
+        return `Uploaded ${timeGap("minute")} minute ago`
+    }else if(timeGap("hour") < 24){
+        // return `${ti}`
+        return (`Uploaded ${timeGap("hour")} hours ago`)
+    }else if(timeGap("day") < 8){
+        return (`Uploaded ${timeGap("day")} days ago`)
+    }else{
+        return `Uploaded on ${uploadDate.format("MMM")} ${uploadDate.get("date")}, ${uploadDate.get("year")}`
+    }
+})
 
 
-        }
-    },
-    data() {
-        return{
-            info : {},
-            projectColor : "",
-        }
-    },
-    props : {
-        url : {
-            type : String
-        }
-    },
-    methods : {
-        tagSelect(tag){
-            this.$router.push({path : "/Repositories" , query : {tag : tag}})
-        },
-    },
-    async mounted() {
-        this.info = (await axios.get(`${this.host}post/simple/${this.user.velog}/${this.url}`)).data.data.post
-    },
+axios.get(`${host.value}post/simple/${velogID.value}/${props.url}`).then(data=> info.value  = data.data.data.post)
+
+const tagSelect = (tag) => {
+    router.push({path : "/Repositories" , query : {tag : tag}})
 }
+
+const routerPost =async (url) => {
+    await store.dispatch("getPost",url)
+    
+    router.push(`/post/${url}`)
+}
+
 </script>
 
 <style>

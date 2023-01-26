@@ -78,6 +78,7 @@ axios.get(`${host.value}series/${velogID.value}/${route.params.project}`).then(d
     }
     #project-describe{
         font-size: 14px;
+        margin-top: 10px;
         /* padding-bottom: 20px; */
         /* border-bottom: 1px solid #D0D7DE; */
         display: flex;

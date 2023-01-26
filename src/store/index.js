@@ -57,6 +57,7 @@ export default createStore({
       state.pinnedPosts = posts
     },
     GET_POSTS(state,posts){
+
       state.posts = posts.posts
       if(posts.count || posts.count === 0){
         state.postsCount = posts.count
@@ -73,7 +74,7 @@ export default createStore({
       // state.posts = posts
     },
     GET_PROJECTS(state,projects){
-      console.log(projects)
+      // console.log(projects)
       state.projects = projects
     },
     GET_TAGS(state,tags){
@@ -122,7 +123,7 @@ actions : {
       commit("GET_POSTS", posts)
       return posts
     }else{
-      let posts_notag = (await axios.get(`${state.host}posts/${state.user.velog}`)).data.posts
+      let posts_notag = (await axios.get(`${state.host}posts/${state.user.velog}`)).data
       commit("GET_POSTS", posts_notag)
       return posts_notag
     }

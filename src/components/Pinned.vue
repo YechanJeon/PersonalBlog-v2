@@ -1,7 +1,7 @@
 <template>
   <div id = 'pinned'>
       <!-- {{post}} -->
-      <span id = 'pinnedTitle' @click = "routerPost"> <!--@click = '$router.push(`/post/${post.key}`)'-->
+      <span id = 'pinnedTitle' @click = "routerPost(url)"> <!--@click = '$router.push(`/post/${post.key}`)'-->
           {{info.title}}
       </span>
       <div id = 'pinnedContents'>
@@ -43,7 +43,8 @@ axios.get(`${host.value}post/simple/${velogID.value}/${props.url}`).then(data =>
     info.value = data.data.data.post
 })
 
-const routerPost = () => {
+const routerPost = async (url) => {
+    await store.dispatch("getPost",url)
     router.push(`/post/${props.url}`)
 } 
 </script>

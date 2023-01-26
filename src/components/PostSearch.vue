@@ -3,7 +3,6 @@
     
     <div id = 'postSearchInputs'>
       <input type="text" id = 'searchInput' :value = "searchKeyword" placeholder="Find a repository.." autocomplete="off" @input = '(e) => postSearch(e.target.value)'>
-      
       <div id = 'selects'>
           <!-- {{selectFocus}} -->
         <div ref = 'seletTagToggle'>
@@ -39,7 +38,7 @@
       <div v-else-if = "selectedTag">
         <span class="bold">{{ selectedTag }}</span> 태그를 포함한 게시물 <span class="bold">{{ postsCount }}</span>개가 있습니다.
       </div>
-      <div id = "postFilterBtn">
+      <div id = "postFilterBtn" @click = "clearFilter()">
         <div></div>
         clear filter
       </div>
@@ -47,100 +46,188 @@
   </div>
 </template>
 
-<script>
-import {mapActions , mapState, mapMutations} from 'vuex'
-export default {
-  computed : {
-    ...mapState(["tags" , "postsCount"]),
-    selectedTag(){
-      return this.$route.query.tag
-    }
-  },
-  data(){
-    return {
-      selectFocus : '',
-      searchKeyword : "",
-      timer : '',
-    }
-  },
-  methods : {
-    ...mapActions([
-      "getTags",
-      "getSearchedPosts",
-      "getPosts"
-    ]),
-    ...mapMutations(["TAG_SELECT"]),
-    postSearch(value){
-      this.searchKeyword = value
-      this.TAG_SELECT()
-      clearTimeout(this.timer) 
-      this.timer = setTimeout(() => {
-        if(this.searchKeyword !== ""){
-          this.$router.push({path : "/Repositories" , query : {keyword : this.searchKeyword}})
-          this.getSearchedPosts(this.searchKeyword)
-        }else{
-          this.$router.push({path: "/Repositories"})
-          this.getPosts()
-        }
-      } , 500)
-      
-    },
-  
-    selectRemove(){
-      setTimeout(() => this.selectFocus = '',50)
-    },
+<script setup>
+import {useStore} from "vuex"
+// import {mapActions , mapState, mapMutations} from 'vuex'
+import {computed ,ref , onMounted} from "vue"
+import { useRouter , useRoute } from "vue-router"
 
-    tagSelect(tag){
-        this.searchKeyword = ""
-        this.$router.push({path : "/Repositories" , query : {tag : tag}})
-        this.selectRemove()//포커스 아웃시 드롭다운 제거 하는 함수
-    },
-    tagToggleActive(){
-      this.selectFocus = 'tagSelect'
-      setTimeout(() => {
-        if(document.getElementById('tagDetail')){
-          document.getElementById('tagDetail').focus()
-        }
-      } , 5)
-    },
-    searchReset() {
-      this.searchKeyword = ""
-      this.$router.push({path: "/Repositories"})
-    }
-  },  
-  watch : {
-    selectedTag(){
-      this.getPosts(this.selectedTag)
-    },
-    selectFocus(){
-      if(window.innerWidth < 544){
-      if(this.selectFocus !== ''){
-        document.getElementById('profileImg').classList.add('profileImageMobile')
-        }else{
-          document.getElementById('profileImg').classList.remove('profileImageMobile')
-        }
-      }
-    }
-  },
-  async mounted(){
-    this.getTags()
-    if(this.$route.query){
-      this.$router.push({path: "/Repositories"})
-    }
-    window.addEventListener('resize' ,() => {
-      if(window.innerWidth < 544){
-        if(this.selectFocus !== ''){
-          document.getElementById('profileImg').classList.add('profileImageMobile')
-        }
-      }else{
-        document.getElementById('profileImg').classList.remove('profileImageMobile')
-      }
-    })
-  },
-  unmounted(){
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
+let tags = computed(() => store.state.tags)
+let postsCount = computed(() => store.state.postsCount)
+let selectedTag = computed(() => route.query.tag)
+
+let selectFocus = ref("")
+let searchKeyword = ref("")
+let timer = ref(null)
+
+const postSearch = value => {
+  searchKeyword.value = value
+  store.commit("TAG_SELECT")
+  clearTimeout(timer.value)
+  timer.value = setTimeout(() => {
+    if(searchKeyword.value !== ""){
+      router.push({path : "/Repositories" , query : {keyword : searchKeyword.value}})
+      store.dispatch("getSearchedPosts" , searchKeyword.value)
+    }
+  })
+}
+
+const tagSelect = (tag) => {
+
+  searchKeyword.value = ""
+  store.dispatch("getPosts", tag)
+  router.push({path : "/Repositories" , query : {tag : tag}})
+  selectRemove()
+}
+
+const searchReset = () => {
+  searchKeyword.value = ""
+  router.push({path:"/Repositories"})
+}
+
+const tagToggleActive = () => {
+  selectFocus.value = "tagSelect"
+  setTimeout(() => {
+    if(document.getElementById("tagDetail")){
+      document.getElementById("tagDetail").focus
+    }
+  })
+}
+
+const selectRemove = () => {
+  setTimeout(()=>selectFocus.value = "",50)
+}
+
+const clearFilter = () =>{
+  store.dispatch("getPosts")
+}
+
+// watch(() => selectedTag => {
+//   store.dispatch.getPosts(selectedTag)
+// })
+
+// watch(() => selectFocus => {
+//   if(window.innerWidth<544){
+//     if(selectFocus !== ""){
+//       document.getElementById("profileImg").classList.add("profileImageMobile")
+//     }else{
+//       document.getElementById("profileImg").classList.remove("profileImageMobile")
+//     }
+//   }
+// })
+
+onMounted(() => {
+  store.dispatch("getTags")
+  if(route.query){
+    router.push({path: "/Repositories"})
   }
-} 
+  // window.addEventListener("resize" , () => {
+  //   if(window.innerWidth < 544){
+  //     if(window.innerWidth<544){
+  //       document.getElementById("profileImg").classList.add("profileImageMobile")
+  //     }
+  //   }else{
+  //     document.getElementById("profileImg").classList.remove("profileImageMobile")
+  //   }
+  // })
+})
+
+// export default {
+//   computed : {
+//     ...mapState(["tags" , "postsCount"]),
+//     selectedTag(){
+//       return this.$route.query.tag
+//     }
+//   },
+//   data(){
+//     return {
+//       selectFocus : '',
+//       searchKeyword : "",
+//       timer : '',
+//     }
+//   },
+//   methods : {
+//     ...mapActions([
+//       "getTags",
+//       "getSearchedPosts",
+//       "getPosts"
+//     ]),
+//     ...mapMutations(["TAG_SELECT"]),
+//     postSearch(value){
+//       this.searchKeyword = value
+//       this.TAG_SELECT()
+//       clearTimeout(this.timer) 
+//       this.timer = setTimeout(() => {
+//         if(this.searchKeyword !== ""){
+//           this.$router.push({path : "/Repositories" , query : {keyword : this.searchKeyword}})
+//           this.getSearchedPosts(this.searchKeyword)
+//         }else{
+//           this.$router.push({path: "/Repositories"})
+//           this.getPosts()
+//         }
+//       } , 500)
+      
+//     },
+  
+//     selectRemove(){
+//       setTimeout(() => this.selectFocus = '',50)
+//     },
+
+//     tagSelect(tag){
+//         this.searchKeyword = ""
+//         this.$router.push({path : "/Repositories" , query : {tag : tag}})
+//         this.selectRemove()//포커스 아웃시 드롭다운 제거 하는 함수
+//     },
+//     tagToggleActive(){
+//       this.selectFocus = 'tagSelect'
+//       setTimeout(() => {
+//         if(document.getElementById('tagDetail')){
+//           document.getElementById('tagDetail').focus()
+//         }
+//       } , 5)
+//     },
+//     searchReset() {
+//       this.searchKeyword = ""
+//       this.$router.push({path: "/Repositories"})
+//     }
+//   },  
+//   watch : {
+//     selectedTag(){
+//       this.getPosts(this.selectedTag)
+//     },
+//     selectFocus(){
+//       if(window.innerWidth < 544){
+//       if(this.selectFocus !== ''){
+//         document.getElementById('profileImg').classList.add('profileImageMobile')
+//         }else{
+//           document.getElementById('profileImg').classList.remove('profileImageMobile')
+//         }
+//       }
+//     }
+//   },
+//   async mounted(){
+//     this.getTags()
+//     if(this.$route.query){
+//       this.$router.push({path: "/Repositories"})
+//     }
+//     window.addEventListener('resize' ,() => {
+//       if(window.innerWidth < 544){
+//         if(this.selectFocus !== ''){
+//           document.getElementById('profileImg').classList.add('profileImageMobile')
+//         }
+//       }else{
+//         document.getElementById('profileImg').classList.remove('profileImageMobile')
+//       }
+//     })
+//   },
+//   unmounted(){
+
+//   }
+// } 
 </script>
 
 <style>
