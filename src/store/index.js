@@ -57,6 +57,7 @@ export default createStore({
       state.pinnedPosts = posts
     },
     GET_POSTS(state,posts){
+      console.log(posts)
       state.postsCount = posts.posts.length
       state.posts = posts.posts
       
@@ -112,11 +113,6 @@ actions : {
   async getPosts({state,commit} , tag){ 
     if(tag){
       let posts = (await axios.get(`${state.host}posts/${state.user.velog}?tag=${tag}`)).data
-      // state.tags.map(ele => {
-      //   if(ele.name === tag){
-      //   posts.count = ele.posts_count
-      //   }
-      // })
       commit("GET_POSTS", posts)
       return posts
     }else{

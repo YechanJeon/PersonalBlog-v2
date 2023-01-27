@@ -13,17 +13,17 @@
                 
                     <div id = 'viewPost-infos'>
                         <div id = 'viewPost-profile'>
-                            <div id ='viewPost-profileImage'>
+                            <div id ='viewPost-profileImage' @click="$router.push('/')">
                                 <img :src="userProfile.image" alt="">
                             </div>
                             <div>
-                                <div id ='viewPost-InfoName'>{{userProfile.name}}</div>
+                                <div id ='viewPost-InfoName' @click="$router.push('/')">{{userProfile.name}}</div>
                                 <div id ='viewPost-InfoDate'>{{uploadDate}}</div>
                             </div>
                         </div>
                     </div>
                     <div class = 'repo-tags' v-if = "post.tags">
-                        <div class = 'tag' style = "margin-right : 3.5px" v-for = 'tag in post.tags' :key = 'tag' >{{tag}}</div>
+                        <div class = 'tag' style = "margin-right : 3.5px" v-for = 'tag in post.tags' :key = 'tag' @click="() => tagSelect(tag)">{{tag}}</div>
                     </div>
                     <PostIndex></PostIndex>
                     <div id = "thumbnail-wrap">
@@ -39,7 +39,7 @@
 
 <script setup>
 import {useStore} from 'vuex'
-import {useRoute} from "vue-router"
+import {useRoute, useRouter} from "vue-router"
 import {  onUnmounted , computed , ref } from 'vue'
 import dayjs from "dayjs"
 import CommentsLayout from "../components/CommentsLayout.vue"
@@ -48,7 +48,11 @@ import OtherPosts from '../components/OtherPosts.vue'
 // import {marked} from "marked"
     const store = useStore();
     const route = useRoute()
-
+    const router = useRouter();
+    const tagSelect = (tag) => {
+    store.dispatch("getPosts",tag)
+        router.push({path : "/Repositories" , query : {tag : tag}})
+    }
     console.log(store.state.post)
     let post = ref(null)
     // const post = computed(() => store.state.post)    
@@ -232,6 +236,7 @@ import OtherPosts from '../components/OtherPosts.vue'
         width: 40px;
         height: 40px;
         margin-right: 8px ;
+        cursor: pointer;
     }
      #viewPost-profileImage>img{
             max-width: 40px;
@@ -243,6 +248,7 @@ import OtherPosts from '../components/OtherPosts.vue'
     #viewPost-InfoName{
         font-size: 18px;
         font-weight: 500;
+        cursor: pointer;
     }
     #viewPost-InfoDate{
         font-size: 12px;

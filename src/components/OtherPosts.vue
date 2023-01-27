@@ -61,11 +61,13 @@ console.log(props.posts)
         display: flex;
         align-items: flex-end;
         flex-direction: column;
+        cursor: pointer;
     }
     .otherPosts-prev{
         display: flex;
         align-items: flex-start;
         flex-direction: column;
+        cursor: pointer;
     }
     .otherPosts-next>div:nth-child(1) , .otherPosts-prev>div:nth-child(1){
         font-size: 12px;
