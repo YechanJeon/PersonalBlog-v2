@@ -15,13 +15,16 @@ import PostSearch from '../components/PostSearch.vue'
 import Repository from '../components/Repository.vue'
 import { useStore } from 'vuex'
 // import {mapActions , mapState} from 'vuex'
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 const store = useStore()
-onMounted(() => {
-
+let posts = []
+if(store.state.posts.length!==0){
+  posts = computed(() => store.state.posts)
+}else{
   store.dispatch("getPosts")
-})
-let posts = computed(() => store.state.posts)
+  posts = computed(() => store.state.posts)
+}
+
 
 // let posts = ref([])
 

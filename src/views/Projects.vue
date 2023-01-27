@@ -11,7 +11,6 @@
 <script setup>
 import Project from '../components/Project'
 // import ProjectSearch from '../components/ProjectSearch.vue'
-import {mapActions,  mapState} from 'vuex'
 import {useStore} from "vuex"
 import { ref } from 'vue'
 const store = useStore()
@@ -19,7 +18,6 @@ let projects = ref([])
   if(store.state.projects.length!== 0){
 
     projects.value = store.state.projects
-    console.log("asdf")
   }else{
     store.dispatch("getProjects").then(data =>projects.value = data)
   }
