@@ -16,13 +16,25 @@ import Repository from '../components/Repository.vue'
 import { useStore } from 'vuex'
 // import {mapActions , mapState} from 'vuex'
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 const store = useStore()
+const route = useRoute()
 let posts = []
-if(store.state.posts.length!==0){
+
+
+if(route.query.tag){
+  store.dispatch("getPosts" , route.query.tag)
+  posts = computed(() => store.state.posts)
+}else if(route.query.keyword){
+  store.dispatch("getSearchedPosts" , route.query.keyword)
+  posts = computed(() => store.state.posts)
+}else{
+  if(store.state.posts.length!==0){
   posts = computed(() => store.state.posts)
 }else{
   store.dispatch("getPosts")
   posts = computed(() => store.state.posts)
+} 
 }
 
 

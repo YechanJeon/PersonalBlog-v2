@@ -57,11 +57,8 @@ export default createStore({
       state.pinnedPosts = posts
     },
     GET_POSTS(state,posts){
-
+      state.postsCount = posts.posts.length
       state.posts = posts.posts
-      if(posts.count || posts.count === 0){
-        state.postsCount = posts.count
-      }
       
       // if(tag){
       //   state.tag.map(ele => {
@@ -113,13 +110,13 @@ actions : {
     return posts
   },
   async getPosts({state,commit} , tag){ 
-    let posts = (await axios.get(`${state.host}posts/${state.user.velog}?tag=${tag}`)).data
     if(tag){
-      state.tags.map(ele => {
-        if(ele.name === tag){
-        posts.count = ele.posts_count
-        }
-      })
+      let posts = (await axios.get(`${state.host}posts/${state.user.velog}?tag=${tag}`)).data
+      // state.tags.map(ele => {
+      //   if(ele.name === tag){
+      //   posts.count = ele.posts_count
+      //   }
+      // })
       commit("GET_POSTS", posts)
       return posts
     }else{
@@ -129,6 +126,7 @@ actions : {
     }
   },
   async getSearchedPosts({state,commit},keyword){
+    console.log(keyword)
     commit("GET_POSTS",((await axios.get(`${state.host}posts/search/${state.user.velog}?keyword=${keyword}`)).data.data.searchPosts))
   },
   async getProjects({state, commit}){

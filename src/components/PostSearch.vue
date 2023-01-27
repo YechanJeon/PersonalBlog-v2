@@ -64,6 +64,10 @@ let selectFocus = ref("")
 let searchKeyword = ref("")
 let timer = ref(null)
 
+if(route.query.keyword){
+  searchKeyword.value = route.query.keyword
+}
+
 const postSearch = value => {
   searchKeyword.value = value
   store.commit("TAG_SELECT")
@@ -106,128 +110,10 @@ const clearFilter = () =>{
   store.dispatch("getPosts")
 }
 
-// watch(() => selectedTag => {
-//   store.dispatch.getPosts(selectedTag)
-// })
-
-// watch(() => selectFocus => {
-//   if(window.innerWidth<544){
-//     if(selectFocus !== ""){
-//       document.getElementById("profileImg").classList.add("profileImageMobile")
-//     }else{
-//       document.getElementById("profileImg").classList.remove("profileImageMobile")
-//     }
-//   }
-// })
-
 onMounted(() => {
   store.dispatch("getTags")
-  if(route.query){
-    router.push({path: "/Repositories"})
-  }
-  // window.addEventListener("resize" , () => {
-  //   if(window.innerWidth < 544){
-  //     if(window.innerWidth<544){
-  //       document.getElementById("profileImg").classList.add("profileImageMobile")
-  //     }
-  //   }else{
-  //     document.getElementById("profileImg").classList.remove("profileImageMobile")
-  //   }
-  // })
 })
 
-// export default {
-//   computed : {
-//     ...mapState(["tags" , "postsCount"]),
-//     selectedTag(){
-//       return this.$route.query.tag
-//     }
-//   },
-//   data(){
-//     return {
-//       selectFocus : '',
-//       searchKeyword : "",
-//       timer : '',
-//     }
-//   },
-//   methods : {
-//     ...mapActions([
-//       "getTags",
-//       "getSearchedPosts",
-//       "getPosts"
-//     ]),
-//     ...mapMutations(["TAG_SELECT"]),
-//     postSearch(value){
-//       this.searchKeyword = value
-//       this.TAG_SELECT()
-//       clearTimeout(this.timer) 
-//       this.timer = setTimeout(() => {
-//         if(this.searchKeyword !== ""){
-//           this.$router.push({path : "/Repositories" , query : {keyword : this.searchKeyword}})
-//           this.getSearchedPosts(this.searchKeyword)
-//         }else{
-//           this.$router.push({path: "/Repositories"})
-//           this.getPosts()
-//         }
-//       } , 500)
-      
-//     },
-  
-//     selectRemove(){
-//       setTimeout(() => this.selectFocus = '',50)
-//     },
-
-//     tagSelect(tag){
-//         this.searchKeyword = ""
-//         this.$router.push({path : "/Repositories" , query : {tag : tag}})
-//         this.selectRemove()//포커스 아웃시 드롭다운 제거 하는 함수
-//     },
-//     tagToggleActive(){
-//       this.selectFocus = 'tagSelect'
-//       setTimeout(() => {
-//         if(document.getElementById('tagDetail')){
-//           document.getElementById('tagDetail').focus()
-//         }
-//       } , 5)
-//     },
-//     searchReset() {
-//       this.searchKeyword = ""
-//       this.$router.push({path: "/Repositories"})
-//     }
-//   },  
-//   watch : {
-//     selectedTag(){
-//       this.getPosts(this.selectedTag)
-//     },
-//     selectFocus(){
-//       if(window.innerWidth < 544){
-//       if(this.selectFocus !== ''){
-//         document.getElementById('profileImg').classList.add('profileImageMobile')
-//         }else{
-//           document.getElementById('profileImg').classList.remove('profileImageMobile')
-//         }
-//       }
-//     }
-//   },
-//   async mounted(){
-//     this.getTags()
-//     if(this.$route.query){
-//       this.$router.push({path: "/Repositories"})
-//     }
-//     window.addEventListener('resize' ,() => {
-//       if(window.innerWidth < 544){
-//         if(this.selectFocus !== ''){
-//           document.getElementById('profileImg').classList.add('profileImageMobile')
-//         }
-//       }else{
-//         document.getElementById('profileImg').classList.remove('profileImageMobile')
-//       }
-//     })
-//   },
-//   unmounted(){
-
-//   }
-// } 
 </script>
 
 <style>
