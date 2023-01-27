@@ -30,7 +30,6 @@
                         <img :src = "post.thumbnail"> 
                     </div>
                     <div id = 'viewPost-content' v-if ="post.content" v-html = "post.content"></div>
-                    <div id = "postLike"><div>Heart</div></div>
                     <OtherPosts :posts = "post.linked_posts"></OtherPosts>
                     <CommentsLayout :comments = "post.comments" :count = "post.comments_count"/>
                 </div>
@@ -255,6 +254,8 @@ import OtherPosts from '../components/OtherPosts.vue'
     }
     #viewPost-content{
         line-height: 1.8em;
+        border-bottom: 1px solid #d8dee4;
+        padding-bottom: 100px;
         
     }
     #viewPost-content>img{
