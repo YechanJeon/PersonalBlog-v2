@@ -3,6 +3,7 @@
         <div class = "comments-header" v-if = "comments">
             {{ count }} comments
         </div>
+        {{ comments }}
         <div v-for = "comment in comments" :key = "comment">
             <Comment :comment = "comment" ></Comment>
         </div>
