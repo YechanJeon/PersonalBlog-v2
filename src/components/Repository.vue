@@ -17,7 +17,7 @@
             </div>
             <div class = 'repo-info' v-if="info.series">
                 <div class = 'pinnedPPostPackageCircle' :style = "{ backgroundColor : info.series.color}"></div>
-                <span @click="$router.push(`/project/${info.series.url_slug}`)"  style ="margin-right : 16px">
+                <span @click="routeProject(info.series.url_slug)"  style ="margin-right : 16px">
                     {{info.series.name}}
                 </span>
                 <div class = "repository-heart">
@@ -66,7 +66,6 @@ const props = defineProps({
 const url = computed(() => props.url)
 
 watch([url] , () => {
-    console.log(`Watch 작동 ${url.value}`)
 
     axios.get(`${host.value}post/simple/${velogID.value}/${url.value}`).then(data=> {
     info.value  = data.data.data.post
@@ -112,8 +111,6 @@ const uploadDate = computed(() => {
 
 axios.get(`${host.value}post/simple/${velogID.value}/${url.value}`).then(data=> {
     info.value  = data.data.data.post
-    console.log(url)
-    console.log(info.value)
 })
 
 
@@ -126,6 +123,10 @@ const routerPost =async (url) => {
     await store.dispatch("getPost",url)
     
     router.push(`/post/${url}`)
+}
+const routeProject = async url => {
+    await store.dispatch("getSeriesPosts",url)
+    router.push(`/project/${url}`)
 }
 
 </script>

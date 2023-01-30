@@ -4,7 +4,7 @@
             <div class ='project-title' ><div :style = "{background : info.color}"></div>{{info.name}}</div> <!--<div :style = "{background : project.color}" />-->
             <div class = 'project-contents'> {{info.description}}</div>
             <div class = 'project-Toggles'>
-                <div class = 'project-button' @click = "$router.push(`/project/${url}`)">프로젝트 살펴보기</div><!--@click = 'projectDetailPage'-->
+                <div class = 'project-button' @click = "routeProject(url)">프로젝트 살펴보기</div><!--@click = 'projectDetailPage'-->
 
             </div>
         </div>
@@ -15,7 +15,9 @@
 import axios from "axios"
 import {useStore} from "vuex"
 import {computed, ref , defineProps} from "vue"
-    const store = useStore()
+import {useRouter} from "vue-router"
+    const store = useStore()   
+    const router = useRouter()
 
     const host = computed(() => store.state.host)
     const velogID = computed(() => store.state.user.velog)
@@ -25,6 +27,11 @@ import {computed, ref , defineProps} from "vue"
     let info = ref({})
 
     axios.get(`${host.value}series/${velogID.value}/${props.url}`).then(data => info.value = data.data.data.series)
+
+    const routeProject = async url => {
+        await store.dispatch("getSeriesPosts",url)
+        router.push(`/project/${url}`)
+    }
     
 </script>
 

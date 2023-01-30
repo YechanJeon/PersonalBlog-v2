@@ -39,7 +39,11 @@
         <span class="bold">{{ selectedTag }}</span> 태그를 포함한 게시물 <span class="bold">{{ postsCount }}</span>개가 있습니다.
       </div>
       <div id = "postFilterBtn" @click = "clearFilter()">
-        <div></div>
+        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="18" height="18" rx="4" fill="#6E778E"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.71934 4.73871C4.85997 4.59826 5.05059 4.51937 5.24934 4.51937C5.44809 4.51937 5.63871 4.59826 5.77934 4.73871L8.99934 7.95871L12.2193 4.73871C12.288 4.66502 12.3708 4.60592 12.4628 4.56493C12.5548 4.52394 12.6541 4.50189 12.7548 4.50012C12.8555 4.49834 12.9555 4.51686 13.0489 4.55459C13.1423 4.59231 13.2272 4.64845 13.2984 4.71967C13.3696 4.79089 13.4257 4.87572 13.4635 4.96911C13.5012 5.0625 13.5197 5.16253 13.5179 5.26323C13.5162 5.36393 13.4941 5.46325 13.4531 5.55525C13.4121 5.64725 13.353 5.73005 13.2793 5.79871L10.0593 9.01871L13.2793 12.2387C13.353 12.3074 13.4121 12.3902 13.4531 12.4822C13.4941 12.5742 13.5162 12.6735 13.5179 12.7742C13.5197 12.8749 13.5012 12.9749 13.4635 13.0683C13.4257 13.1617 13.3696 13.2465 13.2984 13.3177C13.2272 13.389 13.1423 13.4451 13.0489 13.4828C12.9555 13.5206 12.8555 13.5391 12.7548 13.5373C12.6541 13.5355 12.5548 13.5135 12.4628 13.4725C12.3708 13.4315 12.288 13.3724 12.2193 13.2987L8.99934 10.0787L5.77934 13.2987C5.63717 13.4312 5.44912 13.5033 5.25482 13.4999C5.06052 13.4965 4.87513 13.4177 4.73772 13.2803C4.60031 13.1429 4.52159 12.9575 4.51817 12.7632C4.51474 12.5689 4.58686 12.3809 4.71934 12.2387L7.93934 9.01871L4.71934 5.79871C4.57889 5.65808 4.5 5.46746 4.5 5.26871C4.5 5.06996 4.57889 4.87933 4.71934 4.73871Z" fill="white"/>
+</svg>
+</div>
         clear filter
       </div>
     </div>
@@ -100,10 +104,17 @@ const tagToggleActive = () => {
       document.getElementById("tagDetail").focus
     }
   })
+
+  if(window.innerWidth<544){
+    console.log()
+    document.getElementById("profileImg").classList.add("brightness")
+
+  }
 }
 
 const selectRemove = () => {
   setTimeout(()=>selectFocus.value = "",50)
+  document.getElementById("profileImg").classList.remove("brightness")
 }
 
 const clearFilter = () =>{
@@ -315,7 +326,9 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between  ;
     font-size: 14px;
+    
   }
+
   #postFilterBtn{
     height: 24px;
     display: flex;
@@ -330,6 +343,7 @@ onMounted(() => {
     background-color: #2da44e;
     /* margin-top: 6px; */
     margin-right: 6px;
+    border-radius:6px ;
   }
   .bold{
     font-weight: 500;

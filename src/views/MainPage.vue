@@ -86,7 +86,7 @@ import { onMounted } from 'vue';
       width: 100vw !important;
       padding: 0 16px;
       margin-left: 0!important;
-      margin-top: 99px!important;
+      margin-top: 80px!important;
     }
   }
 /* 미디어 쿼리 종료 */

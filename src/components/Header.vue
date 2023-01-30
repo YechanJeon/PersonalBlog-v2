@@ -6,43 +6,54 @@
         <router-link to="/"> <div id = 'header-madinPage'>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM7.6 8C6.71634 8 6 8.71634 6 9.6V19.6C6 22.0301 7.96995 24 10.4 24H17.2C19.6301 24 21.6 22.0301 21.6 19.6V18.665C21.6443 18.6661 21.6887 18.6667 21.7333 18.6667H22.6666C25.6121 18.6667 28 16.2789 28 13.3333C28 10.3878 25.6122 8 22.6666 8H21.7333C21.6887 8 21.6443 8.00055 21.6 8.00163V8H10.8H9.20001H7.6ZM21.7333 15.8667C21.6886 15.8667 21.6441 15.8655 21.6 15.8632V10.8034C21.6441 10.8012 21.6886 10.8 21.7333 10.8H22.6666C24.0658 10.8 25.2 11.9342 25.2 13.3333C25.2 14.7325 24.0658 15.8667 22.6666 15.8667H21.7333Z" fill="white"/></svg>
         </div></router-link>
-        <input type="text" placeholder="Search or jump to.." autocomplete='off'>
+        <!-- <input type="text" placeholder="Search or jump to.." autocomplete='off'> -->
       </div>
       <div id = 'header-right'>
        
         <div style = 'display : flex; align-items : center;' @mousedown = 'profileToggleActive'>
-          <div id ='header-profile' @mouseover = 'profileover' @mouseout="profileout"></div>
-          <span style = 'font-size : 11px'><font-awesome-icon icon="caret-down" class ='fas profileAdd' color = 'white' id="down" ref = 'profileAdd'/></span>
+          <div id ='header-profile' @mouseover = 'profileover' @mouseout="profileout">
+            <img :src="userProfile.image" alt="">
+          </div>
+          <span style = 'font-size : 11px'><svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 5L7.4641 0.5H0.535898L4 5Z" fill="white"/></svg></span>
         </div>
 
-        <div id = 'header-profileToggle' v-if ='profileToggle' tabindex="0" @blur = "profileToggleDisable"><!-- -->
+        <div id = 'header-profileToggle' tabindex="0" v-if ='profileToggle' @blur = "profileToggleDisable"><!-- ' -->
               <!-- <router-link to="/"> -->
                 <div id = 'signStatus' @click = 'profileTogglePush("/")'><!-- -->
-                  <div>Signed in as</div>
+                  <div>Edited By</div>
                   <div>YechanJeon</div>
                 </div>
               <!-- </router-link> -->
               <div id = 'profileToggleDetails'>
-                <div @click = 'profileTogglePush("/")'>Your Profile</div>
-                <div @click = 'profileTogglePush("/repositories")'>Your Repositories</div>
-                <div @click = 'profileTogglePush("/projects")'>Your Packages</div>
+                <div @click = 'profileTogglePush("/")'>Profile</div>
+                <div @click = 'profileTogglePush("/repositories")'>Repositories</div>
+                <div @click = 'profileTogglePush("/projects")'>Projects</div>
   
               </div>
-              <div id = 'signoutToggle' @click="profileToggle = false">Sign out</div>
+              <!-- <div id = 'signoutToggle' @click="profileToggle = false">Sign out</div> -->
         </div>
 
       <!-- router-link $router.push 로 교체 -->
       </div>
-      <div id = 'mobile-logo' @click = '$router.push("/")'/>
+      <div id = 'mobile-logo' @click = '$router.push("/")'>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM7.6 8C6.71634 8 6 8.71634 6 9.6V19.6C6 22.0301 7.96995 24 10.4 24H17.2C19.6301 24 21.6 22.0301 21.6 19.6V18.665C21.6443 18.6661 21.6887 18.6667 21.7333 18.6667H22.6666C25.6121 18.6667 28 16.2789 28 13.3333C28 10.3878 25.6122 8 22.6666 8H21.7333C21.6887 8 21.6443 8.00055 21.6 8.00163V8H10.8H9.20001H7.6ZM21.7333 15.8667C21.6886 15.8667 21.6441 15.8655 21.6 15.8632V10.8034C21.6441 10.8012 21.6886 10.8 21.7333 10.8H22.6666C24.0658 10.8 25.2 11.9342 25.2 13.3333C25.2 14.7325 24.0658 15.8667 22.6666 15.8667H21.7333Z" fill="white"/></svg>
+      </div>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data(){
     return {
       profileToggle : false,
     }
+  },
+  computed : {
+    ...mapState([
+      "userProfile"
+    ])
   },
   methods:{
     profileover(){
@@ -83,7 +94,7 @@ export default {
     width: 32px;
     height: 32px;
     margin: 16px 0;
-    background: white;
+    /* background: white; */
     border-radius: 100%;
   }
   #header{
@@ -174,9 +185,16 @@ export default {
   #header-profile{
     width: 20px;
     height: 20px;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 100%;
-    margin-right: 3px;
+    margin-right: 5px;
+    background-color:#24292E;
+  }
+  #header-profile>img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-color:#24292E;
   }
   #header-profileAdd{
     /* color: #B6B7B9; */
@@ -209,8 +227,9 @@ export default {
   }
   #profileToggleDetails{
     border-top:1px solid #D0D7DE ;
-    border-bottom: 1px solid #D7DED0;
-    margin: 8px 0;
+    /* border-bottom: 1px solid #D7DED0; */
+    /* margin: 8px 0; */
+    margin-top: 8px;
     padding: 8px 0;
   }
   #signStatus{
@@ -231,5 +250,8 @@ export default {
   }
   #header-right>div{
     cursor: pointer;
+  }
+  *:focus{
+    outline: none ;
   }
 </style>

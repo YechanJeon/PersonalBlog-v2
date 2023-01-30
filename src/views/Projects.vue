@@ -40,7 +40,6 @@ let projects = ref([])
     grid-template-columns: 1fr 1fr 1fr;
     row-gap: 24px;
     column-gap: 16px;
-    margin-top: 16px;
 
   }
 </style>

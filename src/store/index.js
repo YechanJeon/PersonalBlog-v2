@@ -36,6 +36,7 @@ export default createStore({
     postsCount : 0,
     selectedTag : "",
     post : {},
+    seriesPosts : {}
   },
   mutations : {
     // async GET_PACKAGE(state , key){
@@ -96,6 +97,10 @@ export default createStore({
     },
     RESET_POST(state){
       state.post = {}
+    },
+    GET_SERIESPOSTS(state,infos){
+      state.seriesPosts = infos
+      console.log(state.seriesPosts)
     }
   },
 
@@ -141,6 +146,13 @@ actions : {
     // commit("GET_POST" , (await axios.get(`${state.host}post/detail/yuuuye/velog-마크다운MarkDown-작성법`)).data)
     // commit("GET_POST" , (await axios.get(`${state.host}post/detail/hyunjine/왜-setState는-비동기적으로-동작하는가`)).data)
   },
+  async getSeriesPosts({state,commit},url){
+
+    // console.log(await axios.get(`${state.host}series/${state.user.velog}/${url}`))
+    let info = (await axios.get(`${state.host}series/${state.user.velog}/${url}`)).data.data.series
+    commit("GET_SERIESPOSTS",info)
+    return info
+  }
   // async getProject({state , commit} , url){
 
   // }
